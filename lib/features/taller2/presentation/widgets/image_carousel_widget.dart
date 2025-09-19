@@ -33,7 +33,7 @@ class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
     super.initState();
     // LIFECYCLE: initState - Inicialización del widget del carrusel
     // Se inicializa el PageController y se configura el auto-play si está habilitado
-    print('🟢 ImageCarouselWidget - initState(): Inicializando carrusel con ${widget.images.length} imágenes');
+    debugPrint('🟢 ImageCarouselWidget - initState(): Inicializando carrusel con ${widget.images.length} imágenes');
     
     _pageController = PageController(initialPage: 0);
     
@@ -47,7 +47,7 @@ class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
     super.didChangeDependencies();
     // LIFECYCLE: didChangeDependencies - Se ejecuta cuando cambian las dependencias
     // Útil para obtener el tema actual para los indicadores
-    print('🟡 ImageCarouselWidget - didChangeDependencies(): Configurando tema del carrusel');
+    debugPrint('🟡 ImageCarouselWidget - didChangeDependencies(): Configurando tema del carrusel');
   }
 
   void _startAutoPlay() {
@@ -55,7 +55,7 @@ class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
       if (mounted) {
         setState(() {
           // LIFECYCLE: setState - Actualiza el índice actual para el auto-play
-          print('🔄 ImageCarouselWidget - setState(): Auto-play cambiando a imagen ${(_currentIndex + 1) % widget.images.length}');
+          debugPrint('🔄 ImageCarouselWidget - setState(): Auto-play cambiando a imagen ${(_currentIndex + 1) % widget.images.length}');
           
           _currentIndex = (_currentIndex + 1) % widget.images.length;
           _pageController.animateToPage(
@@ -76,7 +76,7 @@ class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
   @override
   Widget build(BuildContext context) {
     // LIFECYCLE: build - Construye la UI del carrusel
-    print('🔵 ImageCarouselWidget - build(): Construyendo carrusel en índice $_currentIndex');
+    debugPrint('🔵 ImageCarouselWidget - build(): Construyendo carrusel en índice $_currentIndex');
     
     if (widget.images.isEmpty) {
       return Container(
@@ -130,7 +130,7 @@ class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 5,
                   offset: const Offset(0, 2),
@@ -154,8 +154,8 @@ class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Theme.of(context).primaryColor.withOpacity(0.7),
-                          Theme.of(context).primaryColor.withOpacity(0.9),
+                          Theme.of(context).primaryColor.withValues(alpha: 0.7),
+                          Theme.of(context).primaryColor.withValues(alpha: 0.9),
                         ],
                       ),
                     ),
@@ -304,7 +304,7 @@ class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
   void dispose() {
     // LIFECYCLE: dispose - Limpieza de recursos cuando el widget se elimina
     // Importante: cancelar el timer y disponer del PageController
-    print('🔴 ImageCarouselWidget - dispose(): Limpiando timer y PageController del carrusel');
+    debugPrint('🔴 ImageCarouselWidget - dispose(): Limpiando timer y PageController del carrusel');
     
     _stopAutoPlay();
     _pageController.dispose();

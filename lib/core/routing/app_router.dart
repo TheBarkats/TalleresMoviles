@@ -108,7 +108,7 @@ class _NavigationResultPageState extends State<NavigationResultPage> {
     super.initState();
     // LIFECYCLE: initState se ejecuta una sola vez cuando el widget se crea
     // Se usa para inicialización que no depende del contexto
-    print('🟢 NavigationResultPage - initState(): Widget creado, método: ${widget.method}');
+    debugPrint('🟢 NavigationResultPage - initState(): Widget creado, método: ${widget.method}');
   }
 
   @override
@@ -116,14 +116,14 @@ class _NavigationResultPageState extends State<NavigationResultPage> {
     super.didChangeDependencies();
     // LIFECYCLE: Se ejecuta después de initState y cuando cambian las dependencias
     // Se usa para operaciones que dependen del contexto (Theme, MediaQuery, etc.)
-    print('🟡 NavigationResultPage - didChangeDependencies(): Dependencias cargadas');
+    debugPrint('🟡 NavigationResultPage - didChangeDependencies(): Dependencias cargadas');
   }
 
   @override
   Widget build(BuildContext context) {
     // LIFECYCLE: Se ejecuta cada vez que el widget necesita reconstruirse
     // Se ejecuta después de initState, didChangeDependencies y setState
-    print('🔵 NavigationResultPage - build(): Construyendo UI');
+    debugPrint('🔵 NavigationResultPage - build(): Construyendo UI');
     
     return Scaffold(
       appBar: AppBar(
@@ -178,7 +178,7 @@ class _NavigationResultPageState extends State<NavigationResultPage> {
                       // Simular setState para mostrar en logs
                       setState(() {
                         // LIFECYCLE: setState dispara una reconstrucción del widget
-                        print('🔄 NavigationResultPage - setState(): Forzando reconstrucción');
+                        debugPrint('🔄 NavigationResultPage - setState(): Forzando reconstrucción');
                       });
                     },
                     child: const Text('Trigger setState'),
@@ -225,7 +225,7 @@ class _NavigationResultPageState extends State<NavigationResultPage> {
     }
     
     return Card(
-      color: _getMethodColor(widget.method).withOpacity(0.1),
+      color: _getMethodColor(widget.method).withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -261,7 +261,7 @@ class _NavigationResultPageState extends State<NavigationResultPage> {
   void dispose() {
     // LIFECYCLE: Se ejecuta cuando el widget se elimina permanentemente del árbol
     // Se usa para limpiar recursos, cancelar suscripciones, etc.
-    print('🔴 NavigationResultPage - dispose(): Widget eliminado, liberando recursos');
+    debugPrint('🔴 NavigationResultPage - dispose(): Widget eliminado, liberando recursos');
     super.dispose();
   }
 }

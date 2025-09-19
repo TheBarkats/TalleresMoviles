@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // LIFECYCLE: initState se ejecuta una sola vez al crear el widget
     // Ideal para inicialización que no depende del contexto
-    print('🟢 HomePage - initState(): Inicializando página principal con ${products.length} productos');
+    debugPrint('🟢 HomePage - initState(): Inicializando página principal con ${products.length} productos');
   }
 
   @override
@@ -94,14 +94,14 @@ class _HomePageState extends State<HomePage> {
     super.didChangeDependencies();
     // LIFECYCLE: Se ejecuta después de initState y cuando cambian las dependencias
     // Útil para operaciones que necesitan acceso al contexto
-    print('🟡 HomePage - didChangeDependencies(): Configurando dependencias del contexto');
+    debugPrint('🟡 HomePage - didChangeDependencies(): Configurando dependencias del contexto');
   }
 
   @override
   Widget build(BuildContext context) {
     // LIFECYCLE: Se ejecuta cada vez que se necesita reconstruir el widget
     // Se llama después de initState, didChangeDependencies y setState
-    print('🔵 HomePage - build(): Construyendo interfaz de usuario');
+    debugPrint('🔵 HomePage - build(): Construyendo interfaz de usuario');
     
     return Scaffold(
       appBar: AppBar(
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                 // Configuración del GridView para mostrar 2 columnas
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // 2 columnas
-                  childAspectRatio: 0.75, // Relación ancho/alto de cada item
+                  childAspectRatio: 0.85, // Relación ancho/alto de cada item (más alto)
                   crossAxisSpacing: 8.0, // Espaciado horizontal
                   mainAxisSpacing: 8.0, // Espaciado vertical
                 ),
@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             // LIFECYCLE: setState marca el widget como "dirty" y programa una reconstrucción
             // Se usa cuando queremos actualizar la UI después de cambiar el estado
-            print('🔄 HomePage - setState(): Actualizando estado (simulado)');
+            debugPrint('🔄 HomePage - setState(): Actualizando estado (simulado)');
             
             // Simulamos un cambio mezclando la lista de productos
             products.shuffle();
@@ -194,66 +194,77 @@ class _HomePageState extends State<HomePage> {
           // Pasamos el ID como parámetro de ruta y el nombre como query parameter
           context.go('/product/${product.id}?name=${Uri.encodeComponent(product.name)}');
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            // Imagen del producto (simulada con Container)
-            Expanded(
-              flex: 3,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: product.color.withOpacity(0.2),
-                  border: Border(
-                    bottom: BorderSide(
-                      color: product.color.withOpacity(0.3),
-                      width: 2,
-                    ),
-                  ),
-                ),
+            // Imagen del producto (fondo)
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                color: product.color.withValues(alpha: 0.1),
+              ),
+              child: Center(
                 child: Icon(
                   _getProductIcon(product.name),
-                  size: 48,
+                  size: 40,
                   color: product.color,
                 ),
               ),
             ),
             
-            // Información del producto
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+            // Información del producto (superpuesta)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(2.0),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  border: Border(
+                    top: BorderSide(
+                      color: product.color.withValues(alpha: 0.3),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                height: 32, // Altura fija para evitar overflow
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       product.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 9,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      product.description,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const Spacer(),
-                    Text(
-                      '\$${product.price.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: product.color,
-                        fontSize: 16,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            product.description,
+                            style: TextStyle(
+                              fontSize: 7,
+                              color: Colors.grey.shade600,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          '\$${product.price.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: product.color,
+                            fontSize: 8,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -280,7 +291,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     // LIFECYCLE: Se ejecuta cuando el widget se elimina permanentemente
     // Ideal para limpiar recursos, cancelar suscripciones, etc.
-    print('🔴 HomePage - dispose(): Limpiando recursos de la página principal');
+    debugPrint('🔴 HomePage - dispose(): Limpiando recursos de la página principal');
     super.dispose();
   }
 }

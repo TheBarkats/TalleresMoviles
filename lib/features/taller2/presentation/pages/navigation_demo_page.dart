@@ -16,20 +16,20 @@ class _NavigationDemoPageState extends State<NavigationDemoPage> {
   void initState() {
     super.initState();
     // LIFECYCLE: initState - Inicialización del contador de navegación
-    print('🟢 NavigationDemoPage - initState(): Inicializando demo de navegación');
+    debugPrint('🟢 NavigationDemoPage - initState(): Inicializando demo de navegación');
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // LIFECYCLE: didChangeDependencies - Se ejecuta cuando cambian las dependencias
-    print('🟡 NavigationDemoPage - didChangeDependencies(): Configurando dependencias de navegación');
+    debugPrint('🟡 NavigationDemoPage - didChangeDependencies(): Configurando dependencias de navegación');
   }
 
   @override
   Widget build(BuildContext context) {
     // LIFECYCLE: build - Construye la UI de la demo de navegación
-    print('🔵 NavigationDemoPage - build(): Construyendo demo de navegación (count: $_navigationCount)');
+    debugPrint('🔵 NavigationDemoPage - build(): Construyendo demo de navegación (count: $_navigationCount)');
     
     return Scaffold(
       appBar: AppBar(
@@ -93,7 +93,7 @@ class _NavigationDemoPageState extends State<NavigationDemoPage> {
                       onPressed: () {
                         setState(() {
                           // LIFECYCLE: setState - Reinicia el contador
-                          print('🔄 NavigationDemoPage - setState(): Reiniciando contador de navegación');
+                          debugPrint('🔄 NavigationDemoPage - setState(): Reiniciando contador de navegación');
                           _navigationCount = 0;
                         });
                       },
@@ -240,7 +240,7 @@ class _NavigationDemoPageState extends State<NavigationDemoPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(icon, color: color, size: 24),
@@ -309,7 +309,7 @@ class _NavigationDemoPageState extends State<NavigationDemoPage> {
   void _incrementCounter() {
     setState(() {
       // LIFECYCLE: setState - Incrementa el contador de navegaciones
-      print('🔄 NavigationDemoPage - setState(): Incrementando contador a ${_navigationCount + 1}');
+      debugPrint('🔄 NavigationDemoPage - setState(): Incrementando contador a ${_navigationCount + 1}');
       _navigationCount++;
     });
   }
@@ -317,7 +317,7 @@ class _NavigationDemoPageState extends State<NavigationDemoPage> {
   @override
   void dispose() {
     // LIFECYCLE: dispose - Limpieza cuando se elimina el widget
-    print('🔴 NavigationDemoPage - dispose(): Limpiando recursos de demo de navegación');
+    debugPrint('🔴 NavigationDemoPage - dispose(): Limpiando recursos de demo de navegación');
     super.dispose();
   }
 }

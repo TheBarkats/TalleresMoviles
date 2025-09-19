@@ -27,7 +27,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     super.initState();
     // LIFECYCLE: initState se ejecuta una sola vez al crear el widget
     // Inicializamos el TabController y cargamos datos del producto
-    print('🟢 ProductDetailPage - initState(): Inicializando detalle del producto ID: ${widget.productId}');
+    debugPrint('🟢 ProductDetailPage - initState(): Inicializando detalle del producto ID: ${widget.productId}');
     
     _tabController = TabController(length: 3, vsync: this);
     _loadProductData();
@@ -38,7 +38,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     super.didChangeDependencies();
     // LIFECYCLE: Se ejecuta después de initState y cuando cambian las dependencias
     // Útil para operaciones que dependen del contexto como Theme, MediaQuery
-    print('🟡 ProductDetailPage - didChangeDependencies(): Configurando dependencias del contexto');
+    debugPrint('🟡 ProductDetailPage - didChangeDependencies(): Configurando dependencias del contexto');
   }
 
   void _loadProductData() {
@@ -120,19 +120,19 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   @override
   Widget build(BuildContext context) {
     // LIFECYCLE: Se ejecuta cada vez que se necesita reconstruir el widget
-    print('🔵 ProductDetailPage - build(): Construyendo UI del producto ${widget.productName}');
+    debugPrint('🔵 ProductDetailPage - build(): Construyendo UI del producto ${widget.productName}');
     
     return Scaffold(
       appBar: AppBar(
         title: Text(productData['name']),
-        backgroundColor: productData['color'].withOpacity(0.1),
+        backgroundColor: productData['color'].withValues(alpha: 0.1),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
               setState(() {
                 // LIFECYCLE: setState fuerza una reconstrucción del widget
-                print('🔄 ProductDetailPage - setState(): Compartiendo producto');
+                debugPrint('🔄 ProductDetailPage - setState(): Compartiendo producto');
               });
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -145,126 +145,141 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         ],
       ),
       
-      body: Column(
-        children: [
-          // Información básica del producto
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16.0),
-            color: productData['color'].withOpacity(0.1),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Parámetros recibidos correctamente',
-                      style: TextStyle(
-                        color: Colors.green.shade700,
-                        fontSize: 12,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Información básica del producto - Más compacta
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: productData['color'].withValues(alpha: 0.1),
+                border: Border(
+                  bottom: BorderSide(
+                    color: productData['color'].withValues(alpha: 0.2),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 14,
                       ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          'ID: ${widget.productId} | ${widget.productName}',
+                          style: TextStyle(
+                            color: Colors.green.shade700,
+                            fontSize: 11,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '\$${productData['price'].toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: productData['color'],
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'ID del producto: ${widget.productId}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey.shade600,
                   ),
-                ),
-                Text(
-                  'Nombre: ${widget.productName}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '\$${productData['price'].toStringAsFixed(2)}',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: productData['color'],
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          
-          // TabBar para diferentes secciones
-          TabBar(
-            controller: _tabController,
-            labelColor: productData['color'],
-            unselectedLabelColor: Colors.grey,
-            indicatorColor: productData['color'],
-            tabs: const [
-              Tab(icon: Icon(Icons.info), text: 'Detalles'),
-              Tab(icon: Icon(Icons.build), text: 'Specs'),
-              Tab(icon: Icon(Icons.photo), text: 'Galería'),
-            ],
-          ),
-          
-          // Contenido de las tabs
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildDetailsTab(),
-                _buildSpecsTab(),
-                _buildGalleryTab(),
-              ],
+            
+            // TabBar para diferentes secciones
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withValues(alpha: 0.2),
+                    offset: const Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: TabBar(
+                controller: _tabController,
+                labelColor: productData['color'],
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: productData['color'],
+                tabs: const [
+                  Tab(icon: Icon(Icons.info, size: 20), text: 'Detalles'),
+                  Tab(icon: Icon(Icons.build, size: 20), text: 'Specs'),
+                  Tab(icon: Icon(Icons.photo, size: 20), text: 'Galería'),
+                ],
+              ),
             ),
-          ),
-        ],
+            
+            // Contenido de las tabs
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildDetailsTab(),
+                  _buildSpecsTab(),
+                  _buildGalleryTab(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       
-      // Botones de acción
+      // Botones de acción - Más compactos
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               spreadRadius: 1,
               blurRadius: 5,
               offset: const Offset(0, -2),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: OutlinedButton(
-                onPressed: () => context.go('/'),
-                child: const Text('Volver al Catálogo'),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${productData['name']} agregado al carrito'),
-                      backgroundColor: productData['color'],
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: productData['color'],
-                  foregroundColor: Colors.white,
+        child: SafeArea(
+          child: Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => context.go('/'),
+                  child: const Text('Catálogo'),
                 ),
-                child: const Text('Agregar al Carrito'),
               ),
-            ),
-          ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${productData['name']} agregado'),
+                        backgroundColor: productData['color'],
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: productData['color'],
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Agregar'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -357,7 +372,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   Widget _buildGalleryTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -365,42 +380,60 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             'Galería de imágenes',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           
           // Widget personalizado: Carrusel de imágenes
           ImageCarouselWidget(
             images: productData['images'],
-            height: 250,
+            height: 200, // Reducir altura para evitar overflow
             autoPlay: true,
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           
-          // Grid de imágenes adicionales
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-            ),
-            itemCount: productData['images'].length,
-            itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                color: productData['color'].withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: productData['color'].withOpacity(0.3),
-                ),
+          // Grid de imágenes adicionales - Más compacto
+          Text(
+            'Vista rápida',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 120, // Altura fija para evitar overflow
+            child: GridView.builder(
+              scrollDirection: Axis.horizontal,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                childAspectRatio: 1,
+                mainAxisSpacing: 8,
               ),
-              child: Center(
-                child: Text(
-                  'Imagen ${index + 1}',
-                  style: TextStyle(
-                    color: productData['color'],
-                    fontWeight: FontWeight.bold,
+              itemCount: productData['images'].length,
+              itemBuilder: (context, index) => Container(
+                decoration: BoxDecoration(
+                  color: productData['color'].withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: productData['color'].withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image,
+                        color: productData['color'],
+                        size: 32,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${index + 1}',
+                        style: TextStyle(
+                          color: productData['color'],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -415,7 +448,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   void dispose() {
     // LIFECYCLE: Se ejecuta cuando el widget se elimina permanentemente
     // Importante: limpiar el TabController para evitar memory leaks
-    print('🔴 ProductDetailPage - dispose(): Limpiando TabController y recursos');
+    debugPrint('🔴 ProductDetailPage - dispose(): Limpiando TabController y recursos');
     _tabController.dispose();
     super.dispose();
   }
