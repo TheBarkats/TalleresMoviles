@@ -1,16 +1,31 @@
-# talleresmoviles
+# Talleres moviles - Flutter
 
-A new Flutter project.
+Este repositorio es para subir todos los talleres de la asignatura "Electiva profesional I"
 
-## Getting Started
+## Datos del estudiante
+- **Nombre completo:** Cristopher Arias Contreras
+- **Código:** 230222032
 
-This project is a starting point for a Flutter application.
+## Taller 1 - Descripción breve
+Este proyecto es un taller práctico de Flutter donde se implementan widgets básicos, manejo de estado, imágenes, botones y diseño visual. El objetivo es familiarizarse con la estructura de una app Flutter y sus componentes principales.
 
-A few resources to get you started if this is your first Flutter project:
+## Pasos para ejecutar
+1. Clona el repositorio o descarga el código fuente.
+2. Abre una terminal en la carpeta del proyecto (`taller1`).
+3. Ejecuta:
+   ```
+   flutter pub get
+   ```
+   para instalar las dependencias.
+4. Luego ejecuta:
+   ```
+   flutter run
+   ```
+   para iniciar la aplicación en un emulador o dispositivo físico.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Capturas de pantalla
+En el word enviado
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+---
+
