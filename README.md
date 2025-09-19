@@ -10,7 +10,7 @@ Este repositorio contiene los talleres de la asignatura "Electiva profesional I"
 
 Este proyecto demuestra conceptos avanzados de Flutter incluyendo navegación con go_router, widgets personalizados y ciclo de vida de widgets.
 
-### 🚀 Características Implementadas
+### Características Implementadas
 
 #### 1. Navegación y Paso de Parámetros
 
@@ -129,7 +129,7 @@ void dispose() {
 | `setState()` | Cuando se llama manualmente | Notificar cambios de estado y reconstruir |
 | `dispose()` | Al eliminar el widget | Evitar memory leaks liberando recursos |
 
-### 🏗️ Arquitectura del Proyecto
+### Arquitectura del Proyecto
 
 ```
 lib/
@@ -148,7 +148,7 @@ lib/
                 └── image_carousel_widget.dart  # Widget personalizado
 ```
 
-### 🛠️ Dependencias
+### Dependencias
 
 ```yaml
 dependencies:
@@ -158,7 +158,7 @@ dependencies:
   go_router: ^14.2.7
 ```
 
-### 🔍 Observación del Ciclo de Vida
+### Observación del Ciclo de Vida
 
 Para ver los logs del ciclo de vida en acción:
 
