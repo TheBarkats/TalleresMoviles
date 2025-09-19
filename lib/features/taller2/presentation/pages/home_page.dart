@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
             
             // Información del producto (superpuesta)
             Positioned(
-              bottom: 0,
+              bottom: 16, // Subido a 16 pixels desde abajo para mayor visibilidad
               left: 0,
               right: 0,
               child: Container(
@@ -228,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                height: 32, // Altura fija para evitar overflow
+                height: 27, // Altura reducida para eliminar el 1px overflow
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
