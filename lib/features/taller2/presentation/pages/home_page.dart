@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                 // Configuración del GridView para mostrar 2 columnas
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // 2 columnas
-                  childAspectRatio: 0.85, // Relación ancho/alto de cada item (más alto)
+                  childAspectRatio: 0.95, // Relación ancho/alto de cada item (más alto)
                   crossAxisSpacing: 8.0, // Espaciado horizontal
                   mainAxisSpacing: 8.0, // Espaciado vertical
                 ),
@@ -185,94 +185,107 @@ class _HomePageState extends State<HomePage> {
 
   /// Construye una tarjeta para cada producto en el GridView
   Widget _buildProductCard(Product product) {
-    return Card(
-      elevation: 4,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          // Navegación con parámetros usando go_router
-          // Pasamos el ID como parámetro de ruta y el nombre como query parameter
-          context.go('/product/${product.id}?name=${Uri.encodeComponent(product.name)}');
-        },
-        child: Stack(
-          children: [
-            // Imagen del producto (fondo)
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                color: product.color.withValues(alpha: 0.1),
-              ),
-              child: Center(
-                child: Icon(
-                  _getProductIcon(product.name),
-                  size: 40,
-                  color: product.color,
-                ),
-              ),
-            ),
-            
-            // Información del producto (superpuesta)
-            Positioned(
-              bottom: 16, // Subido a 16 pixels desde abajo para mayor visibilidad
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(2.0),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  border: Border(
-                    top: BorderSide(
-                      color: product.color.withValues(alpha: 0.3),
-                      width: 1,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Obtenemos las dimensiones disponibles para calcular porcentajes
+        final cardWidth = constraints.maxWidth;
+        
+        return Card(
+          elevation: 4,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: () {
+              // Navegación con parámetros usando go_router
+              // Pasamos el ID como parámetro de ruta y el nombre como query parameter
+              context.go('/product/${product.id}?name=${Uri.encodeComponent(product.name)}');
+            },
+            child: Column(
+              children: [
+                // Imagen del producto (70% del espacio disponible)
+                Expanded(
+                  flex: 7,
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: product.color.withValues(alpha: 0.1),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        _getProductIcon(product.name),
+                        size: cardWidth * 0.25, // 25% del ancho de la tarjeta
+                        color: product.color,
+                      ),
                     ),
                   ),
                 ),
-                height: 27, // Altura reducida para eliminar el 1px overflow
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 9,
+                
+                // Información del producto (30% del espacio disponible)
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(cardWidth * 0.03), // 3% del ancho como padding
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      border: Border(
+                        top: BorderSide(
+                          color: product.color.withValues(alpha: 0.3),
+                          width: 1,
+                        ),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        Flexible(
+                          flex: 1,
                           child: Text(
-                            product.description,
+                            product.name,
                             style: TextStyle(
-                              fontSize: 7,
-                              color: Colors.grey.shade600,
+                              fontWeight: FontWeight.bold,
+                              fontSize: cardWidth * 0.08, // 8% del ancho como tamaño de fuente
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Text(
-                          '\$${product.price.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: product.color,
-                            fontSize: 8,
+                        Flexible(
+                          flex: 1,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  product.description,
+                                  style: TextStyle(
+                                    fontSize: cardWidth * 0.06, // 6% del ancho como tamaño de fuente
+                                    color: Colors.grey.shade600,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Text(
+                                '\$${product.price.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: product.color,
+                                  fontSize: cardWidth * 0.07, // 7% del ancho como tamaño de fuente
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
