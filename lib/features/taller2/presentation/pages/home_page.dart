@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import '../../../taller_segundo_plano/presentation/pages/async_demo_page.dart';
+import '../../../taller_segundo_plano/presentation/pages/timer_demo_page.dart';
+import '../../../taller_segundo_plano/presentation/pages/isolate_demo_page.dart';
 
-/// Modelo simple para los productos que se mostrarán en el GridView
-class Product {
-  final String id;
-  final String name;
+/// Modelo para las demos del taller de segundo plano
+class DemoItem {
+  final String title;
   final String description;
-  final String imageUrl;
-  final double price;
+  final IconData icon;
   final Color color;
+  final Widget page;
+  final String subtitle;
 
-  Product({
-    required this.id,
-    required this.name,
+  DemoItem({
+    required this.title,
     required this.description,
-    required this.imageUrl,
-    required this.price,
+    required this.icon,
     required this.color,
+    required this.page,
+    required this.subtitle,
   });
 }
 
-/// Página principal que demuestra GridView y navegación con parámetros
+/// Página principal que demuestra asincronía, Timer e Isolates
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -29,55 +31,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Lista de productos de ejemplo
-  final List<Product> products = [
-    Product(
-      id: '1',
-      name: 'Smartphone Pro',
-      description: 'El último smartphone con tecnología avanzada',
-      imageUrl: 'https://via.placeholder.com/200x200/4CAF50/FFFFFF?text=Phone',
-      price: 999.99,
-      color: Colors.green,
-    ),
-    Product(
-      id: '2',
-      name: 'Laptop Gaming',
-      description: 'Potente laptop para juegos y trabajo',
-      imageUrl: 'https://via.placeholder.com/200x200/2196F3/FFFFFF?text=Laptop',
-      price: 1299.99,
+  // Lista de demos para el taller de segundo plano
+  final List<DemoItem> demos = [
+    DemoItem(
+      title: 'Async/Await',
+      subtitle: 'Future y Asincronía',
+      description: 'Demuestra Future, async/await y manejo de estados asíncronos sin bloquear la UI',
+      icon: Icons.schedule,
       color: Colors.blue,
+      page: const AsyncDemoPage(),
     ),
-    Product(
-      id: '3',
-      name: 'Auriculares Pro',
-      description: 'Auriculares con cancelación de ruido',
-      imageUrl: 'https://via.placeholder.com/200x200/FF9800/FFFFFF?text=Audio',
-      price: 299.99,
+    DemoItem(
+      title: 'Timer',
+      subtitle: 'Cronómetro y Countdown',
+      description: 'Implementa cronómetro y cuenta regresiva usando Timer con controles completos',
+      icon: Icons.timer,
       color: Colors.orange,
+      page: const TimerDemoPage(),
     ),
-    Product(
-      id: '4',
-      name: 'Smartwatch',
-      description: 'Reloj inteligente con múltiples funciones',
-      imageUrl: 'https://via.placeholder.com/200x200/9C27B0/FFFFFF?text=Watch',
-      price: 399.99,
+    DemoItem(
+      title: 'Isolates',
+      subtitle: 'Tareas CPU-intensivas',
+      description: 'Ejecuta cálculos pesados en Isolates sin bloquear la interfaz de usuario',
+      icon: Icons.memory,
       color: Colors.purple,
-    ),
-    Product(
-      id: '5',
-      name: 'Tablet Design',
-      description: 'Tablet perfecta para diseño y creatividad',
-      imageUrl: 'https://via.placeholder.com/200x200/F44336/FFFFFF?text=Tablet',
-      price: 799.99,
-      color: Colors.red,
-    ),
-    Product(
-      id: '6',
-      name: 'Cámara 4K',
-      description: 'Cámara profesional con grabación 4K',
-      imageUrl: 'https://via.placeholder.com/200x200/607D8B/FFFFFF?text=Camera',
-      price: 1199.99,
-      color: Colors.blueGrey,
+      page: const IsolateDemoPage(),
     ),
   ];
 
@@ -85,15 +63,13 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // LIFECYCLE: initState se ejecuta una sola vez al crear el widget
-    // Ideal para inicialización que no depende del contexto
-    debugPrint('🟢 HomePage - initState(): Inicializando página principal con ${products.length} productos');
+    debugPrint('🟢 HomePage - initState(): Inicializando taller de segundo plano con ${demos.length} demos');
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // LIFECYCLE: Se ejecuta después de initState y cuando cambian las dependencias
-    // Útil para operaciones que necesitan acceso al contexto
     debugPrint('🟡 HomePage - didChangeDependencies(): Configurando dependencias del contexto');
   }
 
@@ -105,17 +81,8 @@ class _HomePageState extends State<HomePage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Taller 2 - Flutter'),
+        title: const Text('Taller: Segundo Plano - Flutter'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.navigation),
-            tooltip: 'Demo de Navegación',
-            onPressed: () {
-              context.go('/navigation-demo');
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -123,41 +90,54 @@ class _HomePageState extends State<HomePage> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16.0),
-            color: Theme.of(context).colorScheme.primaryContainer,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.primaryContainer,
+                  Theme.of(context).colorScheme.primaryContainer.withOpacity(0.7),
+                ],
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Catálogo de Productos',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    const Icon(Icons.workspaces, size: 32),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Asincronía, Timer e Isolates',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Toca cualquier producto para ver sus detalles',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                const SizedBox(height: 8),
+                const Text(
+                  'Selecciona una demo para explorar conceptos de programación asíncrona en Flutter',
+                  style: TextStyle(fontSize: 14),
                 ),
               ],
             ),
           ),
           
-          // GridView con productos
+          // GridView con demos
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: GridView.builder(
-                // Configuración del GridView para mostrar 2 columnas
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 2 columnas
-                  childAspectRatio: 0.85, // Relación ancho/alto de cada item (más alto)
-                  crossAxisSpacing: 8.0, // Espaciado horizontal
-                  mainAxisSpacing: 8.0, // Espaciado vertical
+                  crossAxisCount: 1, // Una columna para mejor visualización
+                  childAspectRatio: 3.0, // Más ancho que alto
+                  mainAxisSpacing: 16.0,
                 ),
-                itemCount: products.length,
+                itemCount: demos.length,
                 itemBuilder: (context, index) {
-                  final product = products[index];
-                  return _buildProductCard(product);
+                  final demo = demos[index];
+                  return _buildDemoCard(demo);
                 },
               ),
             ),
@@ -165,133 +145,173 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       
-      // Botón flotante para demostrar setState
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            // LIFECYCLE: setState marca el widget como "dirty" y programa una reconstrucción
-            // Se usa cuando queremos actualizar la UI después de cambiar el estado
-            debugPrint('🔄 HomePage - setState(): Actualizando estado (simulado)');
-            
-            // Simulamos un cambio mezclando la lista de productos
-            products.shuffle();
-          });
-        },
-        tooltip: 'Mezclar productos (setState)',
-        child: const Icon(Icons.shuffle),
+      // Información adicional
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showProjectInfo,
+        icon: const Icon(Icons.info),
+        label: const Text('Info del Proyecto'),
       ),
     );
   }
 
-  /// Construye una tarjeta para cada producto en el GridView
-  Widget _buildProductCard(Product product) {
+  /// Construye una tarjeta para cada demo del taller
+  Widget _buildDemoCard(DemoItem demo) {
     return Card(
-      elevation: 4,
+      elevation: 6,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {
-          // Navegación con parámetros usando go_router
-          // Pasamos el ID como parámetro de ruta y el nombre como query parameter
-          context.go('/product/${product.id}?name=${Uri.encodeComponent(product.name)}');
-        },
-        child: Stack(
-          children: [
-            // Imagen del producto (fondo)
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                color: product.color.withValues(alpha: 0.1),
-              ),
-              child: Center(
-                child: Icon(
-                  _getProductIcon(product.name),
-                  size: 40,
-                  color: product.color,
-                ),
-              ),
+        onTap: () => _navigateToDemo(demo),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                demo.color.withOpacity(0.1),
+                demo.color.withOpacity(0.05),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
             ),
-            
-            // Información del producto (superpuesta)
-            Positioned(
-              bottom: 16, // Subido a 16 pixels desde abajo para mayor visibilidad
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(2.0),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  border: Border(
-                    top: BorderSide(
-                      color: product.color.withValues(alpha: 0.3),
-                      width: 1,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                // Icono de la demo
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: demo.color.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: demo.color.withOpacity(0.5),
+                      width: 2,
                     ),
                   ),
+                  child: Icon(
+                    demo.icon,
+                    size: 32,
+                    color: demo.color,
+                  ),
                 ),
-                height: 27, // Altura reducida para eliminar el 1px overflow
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 9,
+                
+                const SizedBox(width: 16),
+                
+                // Contenido de la demo
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        demo.title,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: demo.color,
+                        ),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            product.description,
-                            style: TextStyle(
-                              fontSize: 7,
-                              color: Colors.grey.shade600,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                      const SizedBox(height: 4),
+                      Text(
+                        demo.subtitle,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: demo.color.withOpacity(0.8),
+                          fontWeight: FontWeight.w500,
                         ),
-                        Text(
-                          '\$${product.price.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: product.color,
-                            fontSize: 8,
-                          ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        demo.description,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey.shade600,
                         ),
-                      ],
-                    ),
-                  ],
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+                
+                // Flecha indicadora
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: demo.color.withOpacity(0.6),
+                  size: 20,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  /// Retorna un icono apropiado basado en el nombre del producto
-  IconData _getProductIcon(String productName) {
-    if (productName.toLowerCase().contains('phone')) return Icons.smartphone;
-    if (productName.toLowerCase().contains('laptop')) return Icons.laptop;
-    if (productName.toLowerCase().contains('auricular')) return Icons.headphones;
-    if (productName.toLowerCase().contains('watch')) return Icons.watch;
-    if (productName.toLowerCase().contains('tablet')) return Icons.tablet;
-    if (productName.toLowerCase().contains('camera') || productName.toLowerCase().contains('cámara')) return Icons.camera_alt;
-    return Icons.devices;
+  /// Navega a la demo seleccionada
+  void _navigateToDemo(DemoItem demo) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => demo.page,
+      ),
+    );
+  }
+
+  /// Muestra información del proyecto
+  void _showProjectInfo() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.info, color: Theme.of(context).colorScheme.primary),
+            const SizedBox(width: 8),
+            const Text('Información del Proyecto'),
+          ],
+        ),
+        content: const SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Taller: Segundo Plano en Flutter\n',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              Text(
+                'Este proyecto demuestra:\n\n'
+                '🔄 Asincronía con Future/async/await\n'
+                '• Simulación de consultas con delay\n'
+                '• Manejo de estados (Loading/Success/Error)\n'
+                '• Operaciones paralelas con Future.wait\n\n'
+                '⏱️ Timer para cronómetro y countdown\n'
+                '• Timer.periodic con controles completos\n'
+                '• Streams para comunicar cambios\n'
+                '• Limpieza de recursos en dispose()\n\n'
+                '🧮 Isolates para tareas CPU-intensivas\n'
+                '• Cálculos pesados sin bloquear UI\n'
+                '• Comunicación por mensajes\n'
+                '• Diferentes tipos de procesamiento\n\n'
+                '💡 Todos los ejemplos incluyen:\n'
+                '• Logs detallados en consola\n'
+                '• Documentación inline\n'
+                '• UI responsiva y profesional',
+                style: TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   void dispose() {
     // LIFECYCLE: Se ejecuta cuando el widget se elimina permanentemente
-    // Ideal para limpiar recursos, cancelar suscripciones, etc.
-    debugPrint('🔴 HomePage - dispose(): Limpiando recursos de la página principal');
+    debugPrint('🔴 HomePage - dispose(): Limpiando recursos del taller segundo plano');
     super.dispose();
   }
 }
