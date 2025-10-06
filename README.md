@@ -225,6 +225,169 @@ Este proyecto es un taller práctico de Flutter donde se implementan widgets bá
 ## Capturas de pantalla
 En el word enviado
 
+---
+
+## Taller: Segundo Plano - Asincronía, Timer e Isolates
+
+### 📋 Descripción del Nuevo Taller
+
+Este nuevo taller demuestra conceptos avanzados de programación asíncrona en Flutter:
+
+- **🔄 Future/async/await**: Operaciones asíncronas no bloqueantes
+- **⏱️ Timer**: Cronómetro y cuenta regresiva con controles
+- **🧮 Isolates**: Tareas CPU-intensivas sin bloquear la UI
+
+### 🏗️ Estructura Implementada
+
+```
+lib/features/taller_segundo_plano/
+├── services/
+│   ├── async_service.dart      # Simulación de consultas asíncronas
+│   ├── timer_service.dart      # Manejo de Timer con Streams
+│   └── isolate_service.dart    # Procesamiento en Isolates
+└── presentation/pages/
+    ├── async_demo_page.dart    # Demo de Future/async/await
+    ├── timer_demo_page.dart    # Demo de cronómetro
+    └── isolate_demo_page.dart  # Demo de Isolates
+```
+
+### 🎯 Funcionalidades Principales
+
+#### 1. **Demo de Async/Await**
+- Consultas simuladas con `Future.delayed()`
+- Manejo de estados: Loading → Success/Error
+- Operaciones paralelas con `Future.wait()`
+- Logs detallados para debugging
+- UI responsiva durante operaciones
+
+#### 2. **Demo de Timer**
+- Cronómetro (cuenta hacia arriba)
+- Cuenta regresiva (countdown personalizable)  
+- Controles: Iniciar/Pausar/Reanudar/Reiniciar
+- Streams para comunicar cambios de estado
+- Limpieza automática de recursos
+
+#### 3. **Demo de Isolates**
+- Cálculos matemáticos pesados (suma compleja)
+- Generación de números primos
+- Procesamiento de datos simulado
+- UI permanece fluida durante cálculos
+- Comunicación por mensajes entre Isolates
+
+### 💡 Conceptos Demostrados
+
+#### **Asincronía**
+```dart
+// Ejemplo de consulta asíncrona
+Future<List<String>> fetchData({int delaySeconds = 3}) async {
+  await Future.delayed(Duration(seconds: delaySeconds));
+  
+  // Simulación de posible error
+  if (Random().nextInt(10) < 2) {
+    throw Exception('Error simulado de red');
+  }
+  
+  return ['Dato 1', 'Dato 2', 'Dato 3'];
+}
+```
+
+#### **Timer con Streams**
+```dart
+Timer? _timer;
+final StreamController<int> _timeController = StreamController<int>.broadcast();
+
+void startTimer() {
+  _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _seconds++;
+    _timeController.add(_seconds); // Notificar cambios
+  });
+}
+```
+
+#### **Isolates para CPU**
+```dart
+// Función que se ejecuta en Isolate separado
+void _heavySumIsolate(IsolateData data) {
+  double sum = 0;
+  for (int i = 0; i < data.iterations; i++) {
+    sum += sqrt(i * i + 1) * sin(i) * cos(i);
+  }
+  
+  data.sendPort.send(BigSumResult(sum: sum, iterations: data.iterations));
+}
+```
+
+### 🔍 Características Técnicas
+
+#### **Manejo de Estados**
+- Loading states con indicadores visuales
+- Error handling con mensajes informativos  
+- Success states con datos formateados
+
+#### **Resource Management**
+```dart
+@override
+void dispose() {
+  _timer?.cancel();              // Cancelar timers
+  _timeController.close();       // Cerrar streams
+  _receivePort.close();         // Cerrar communication ports
+  super.dispose();
+}
+```
+
+#### **UI Responsiva**
+- Animaciones que demuestran fluidez durante Isolates
+- Contadores en tiempo real para probar no-bloqueo
+- Layout adaptativo con LayoutBuilder
+
+### 📊 Casos de Uso Prácticos
+
+#### **Future/async/await**
+- Autenticación de usuarios
+- Carga de datos desde APIs
+- Operaciones de base de datos
+- Upload/download de archivos
+
+#### **Timer**
+- Aplicaciones de fitness (cronómetros)
+- Juegos (timeouts, countdowns)
+- Notificaciones periódicas
+- Auto-refresh de contenido
+
+#### **Isolates**
+- Procesamiento de imágenes
+- Parsing de archivos grandes (JSON/CSV)
+- Algoritmos de ordenamiento
+- Cálculos científicos/matemáticos
+
+### 🚀 Cómo Probar
+
+1. **Ejecutar la aplicación**:
+   ```bash
+   flutter run
+   ```
+
+2. **Navegar a las demos**:
+   - Página principal muestra 3 tarjetas principales
+   - Cada demo incluye explicaciones y ejemplos interactivos
+   - Revisar la consola de debug para logs detallados
+
+3. **Probar funcionalidades**:
+   - **Async**: Botones para consultas de diferentes duraciones
+   - **Timer**: Cronómetro y countdown con controles
+   - **Isolates**: Diferentes tipos de procesamiento CPU-intensivo
+
+### 📈 Logging Detallado
+
+El proyecto incluye logging comprensivo para seguimiento:
+
+```
+🔵 [AsyncService] Iniciando consulta de datos...
+🟢 [AsyncService] Datos obtenidos exitosamente
+⏱️ [TimerService] Iniciando cronómetro  
+🔧 [IsolateService] Iniciando cálculo pesado
+✅ [IsolateService] Cálculo completado
+```
 
 ---
 
