@@ -424,12 +424,12 @@ class _IsolateDemoPageState extends State<IsolateDemoPage>
   Widget _buildQuickButton(String label, int value, bool isDisabled, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: isDisabled ? null : onPressed,
-      child: Text(label),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.purple.shade100,
         foregroundColor: Colors.purple.shade700,
         textStyle: const TextStyle(fontSize: 12),
       ),
+      child: Text(label),
     );
   }
 

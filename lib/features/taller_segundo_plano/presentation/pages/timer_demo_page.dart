@@ -316,12 +316,12 @@ class _TimerDemoPageState extends State<TimerDemoPage> {
   Widget _buildQuickCountdownButton(String label, int seconds) {
     return ElevatedButton(
       onPressed: _isRunning ? null : () => _startCountdownWithSeconds(seconds),
-      child: Text(label),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.deepOrange.shade100,
         foregroundColor: Colors.deepOrange.shade700,
         textStyle: const TextStyle(fontSize: 12),
       ),
+      child: Text(label),
     );
   }
 
