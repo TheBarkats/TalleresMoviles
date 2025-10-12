@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'core/routing/app_router.dart';
 
 /// Punto de entrada de la aplicación
@@ -58,3 +58,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

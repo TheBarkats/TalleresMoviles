@@ -1,393 +1,607 @@
-# Talleres Móviles - Flutter
+# Taller HTTP - Star Wars API# Taller HTTP - Star Wars API
 
-Este repositorio contiene los talleres de la asignatura "Electiva profesional I" - Desarrollo Móvil.
 
-## Datos del estudiante
-- **Nombre completo:** Cristopher Arias Contreras
-- **Código:** 230222032
 
-## Taller 2 - Navegación y Widgets Avanzados
+Aplicación Flutter que demuestra el consumo de APIs REST utilizando el paquete `http`, implementando arquitectura limpia y navegación con parámetros.Aplicación Flutter que demuestra el consumo de APIs REST utilizando el paquete `http`, implementando arquitectura limpia y navegación con parámetros.
 
-Este proyecto demuestra conceptos avanzados de Flutter incluyendo navegación con go_router, widgets personalizados y ciclo de vida de widgets.
 
-### Características Implementadas
 
-#### 1. Navegación y Paso de Parámetros
+## Información Académica## Información Académica
 
-##### go_router Configuración
-La aplicación utiliza `go_router` como sistema de navegación principal, configurado en `lib/core/routing/app_router.dart`.
+
+
+**Estudiante:** Cristopher Arias Contreras  **Estudiante:** Cristopher Arias Contreras  
+
+**Código:** 230222032  **Código:** 230222032  
+
+**Asignatura:** Electiva profesional I - Desarrollo Móvil  **Asignatura:** Electiva profesional I - Desarrollo Móvil  
+
+**Semestre:** VII Semestre  **Semestre:** VII Semestre  
+
+**Universidad:** Unidad Central del Valle  **Universidad:** Unidad Central del Valle  
+
+
+
+## Descripción del Proyecto## Descripción del Proyecto
+
+
+
+Este taller está desarrollado como parte de la **Electiva profesional I - Desarrollo Móvil** y demuestra las mejores prácticas para el consumo de APIs REST en Flutter, implementando una aplicación que consulta la **Star Wars API (SWAPI)** para mostrar información de personajes del universo de Star Wars.Este taller está desarrollado como parte de la **Electiva profesional I - Desarrollo Móvil** y demuestra las mejores prácticas para el consumo de APIs REST en Flutter, implementando una aplicación que consulta la **Star Wars API (SWAPI)** para mostrar información de personajes del universo de Star Wars.
+
+
+
+## Características Implementadas## Características Implementadas
+
+
+
+- ✅ **Consumo de API pública:** Star Wars API (swapi.dev)- ✅ **Consumo de API pública:** Star Wars API (swapi.dev)
+
+- ✅ **Manejo de estados:** Loading, success, error con UI responsiva- ✅ **Manejo de estados:** Loading, success, error con UI responsiva
+
+- ✅ **Navegación:** go_router con paso de parámetros y rutas tipadas- ✅ **Navegación:** go_router con paso de parámetros y rutas tipadas
+
+- ✅ **Scroll infinito:** Paginación automática al llegar al final- ✅ **Scroll infinito:** Paginación automática al llegar al final
+
+- ✅ **Búsqueda en tiempo real:** Filtrado de personajes por nombre con debounce- ✅ **Búsqueda en tiempo real:** Filtrado de personajes por nombre con debounce
+
+- ✅ **Arquitectura limpia:** Separación por capas (models, services, views)- ✅ **Arquitectura limpia:** Separación por capas (models, services, views)
+
+- ✅ **Manejo de errores:** HTTP, de red y de parsing JSON- ✅ **Manejo de errores:** HTTP, de red y de parsing JSON
+
+- ✅ **Tema Star Wars:** Diseño visual inmersivo con efectos de neón- ✅ **Tema Star Wars:** Diseño visual inmersivo con efectos de neón
+
+- ✅ **Documentación:** Código completamente documentado- ✅ **Documentación:** Código completamente documentado
 
 ##### Rutas Definidas:
-- **`/`** - Página principal con catálogo de productos (GridView)
+
+## Arquitectura del Proyecto- **`/`** - Página principal con catálogo de productos (GridView)
+
 - **`/product/:id`** - Página de detalle del producto (recibe ID como parámetro de ruta y nombre como query parameter)
-- **`/navigation-demo`** - Página de demostración de tipos de navegación
-- **`/navigation-demo/result/:method`** - Página de resultado para demostrar diferencias de navegación
 
-##### Paso de Parámetros:
-```dart
-// Ejemplo de navegación con parámetros
-context.go('/product/${product.id}?name=${Uri.encodeComponent(product.name)}');
+```- **`/navigation-demo`** - Página de demostración de tipos de navegación
 
-// En la página de destino se reciben así:
-final productId = state.pathParameters['id']!;
-final productName = state.uri.queryParameters['name'] ?? 'Producto sin nombre';
+lib/- **`/navigation-demo/result/:method`** - Página de resultado para demostrar diferencias de navegación
+
+├── main.dart                          # Punto de entrada de la aplicación
+
+├── core/##### Paso de Parámetros:
+
+│   └── routing/```dart
+
+│       └── app_router.dart           # Configuración de rutas con go_router// Ejemplo de navegación con parámetros
+
+└── features/context.go('/product/${product.id}?name=${Uri.encodeComponent(product.name)}');
+
+    ├── taller2/
+
+    │   └── presentation/pages/// En la página de destino se reciben así:
+
+    │       └── home_page.dart        # Página principal del tallerfinal productId = state.pathParameters['id']!;
+
+    └── taller_http/                  # Feature del taller HTTPfinal productName = state.uri.queryParameters['name'] ?? 'Producto sin nombre';
+
+        ├── data/```
+
+        │   ├── models/              # Modelos de datos
+
+        │   │   ├── character.dart   # Modelo de personaje##### Diferencias entre Métodos de Navegación:
+
+        │   │   ├── planet.dart      # Modelo de planeta
+
+        │   │   └── api_response.dart # Modelo de respuesta de API| Método | Comportamiento | Uso Recomendado |
+
+        │   └── services/            # Servicios de datos|--------|---------------|-----------------|
+
+        │       └── star_wars_api_service.dart # Servicio de API| `context.go()` | Reemplaza toda la pila de navegación | Cambios de flujo completos, autenticación |
+
+        └── presentation/| `context.push()` | Añade nueva pantalla a la pila | Detalles, formularios, pantallas temporales |
+
+            └── pages/               # Páginas de la interfaz| `context.replace()` | Reemplaza la pantalla actual | Flujos paso a paso, confirmaciones |
+
+                ├── star_wars_characters_page.dart # Lista de personajes
+
+                └── character_detail_page.dart     # Detalle del personaje#### 2. Widgets Implementados
+
 ```
-
-##### Diferencias entre Métodos de Navegación:
-
-| Método | Comportamiento | Uso Recomendado |
-|--------|---------------|-----------------|
-| `context.go()` | Reemplaza toda la pila de navegación | Cambios de flujo completos, autenticación |
-| `context.push()` | Añade nueva pantalla a la pila | Detalles, formularios, pantallas temporales |
-| `context.replace()` | Reemplaza la pantalla actual | Flujos paso a paso, confirmaciones |
-
-#### 2. Widgets Implementados
 
 ##### 2.1 GridView (Página Principal)
-- **Ubicación**: `lib/features/taller2/presentation/pages/home_page.dart`
+
+## Tecnologías Utilizadas- **Ubicación**: `lib/features/taller2/presentation/pages/home_page.dart`
+
 - **Propósito**: Mostrar un catálogo de productos en formato de cuadrícula
-- **Configuración**: 
-  - 2 columnas
-  - Relación aspecto 0.75
-  - Espaciado de 8px
-- **Razón de elección**: GridView es ideal para mostrar elementos en formato de galería/catálogo, permitiendo al usuario ver múltiples productos a la vez de manera organizada.
+
+- **Flutter SDK:** ^3.9.0- **Configuración**: 
+
+- **Dart:** ^3.0.0  - 2 columnas
+
+- **Dependencias principales:**  - Relación aspecto 0.75
+
+  - `http: ^1.1.0` - Para consumo de API REST  - Espaciado de 8px
+
+  - `go_router: ^14.2.7` - Para navegación y rutas- **Razón de elección**: GridView es ideal para mostrar elementos en formato de galería/catálogo, permitiendo al usuario ver múltiples productos a la vez de manera organizada.
+
+  - `cupertino_icons: ^1.0.8` - Iconos iOS
 
 ##### 2.2 TabBar (Página de Detalles)
-- **Ubicación**: `lib/features/taller2/presentation/pages/product_detail_page.dart`
+
+## API Utilizada- **Ubicación**: `lib/features/taller2/presentation/pages/product_detail_page.dart`
+
 - **Propósito**: Organizar información del producto en secciones
-- **Pestañas**:
-  - **Detalles**: Descripción y características
-  - **Specs**: Especificaciones técnicas
-  - **Galería**: Carrusel de imágenes
+
+**Star Wars API (SWAPI)**- **Pestañas**:
+
+- **Base URL:** https://swapi.dev/api/  - **Detalles**: Descripción y características
+
+- **Endpoint principal:** `/people/` (personajes)  - **Specs**: Especificaciones técnicas
+
+- **Documentación:** [swapi.dev](https://swapi.dev)  - **Galería**: Carrusel de imágenes
+
 - **Razón de elección**: TabBar permite organizar gran cantidad de información de manera estructurada, mejorando la experiencia del usuario al evitar scroll excesivo.
 
+### Estructura de respuesta de la API:
+
 ##### 2.3 ImageCarouselWidget (Widget Personalizado)
-- **Ubicación**: `lib/features/taller2/presentation/widgets/image_carousel_widget.dart`
-- **Propósito**: Carrusel de imágenes con auto-play y controles manuales
-- **Características**:
-  - Auto-play configurable
-  - Indicadores de página
-  - Controles de navegación
-  - Gestos táctiles para pausar/reanudar
-- **Razón de elección**: Un carrusel de imágenes es fundamental en aplicaciones de e-commerce para mostrar múltiples vistas de un producto de manera atractiva e interactiva.
 
-#### 3. Ciclo de Vida de Widgets
+```json- **Ubicación**: `lib/features/taller2/presentation/widgets/image_carousel_widget.dart`
 
-Todos los widgets implementados incluyen logging completo del ciclo de vida con comentarios explicativos:
+{- **Propósito**: Carrusel de imágenes con auto-play y controles manuales
 
-##### Métodos del Ciclo de Vida Monitoreados:
+  "name": "Luke Skywalker",- **Características**:
 
-```dart
-@override
-void initState() {
-  super.initState();
-  // 🟢 LIFECYCLE: Se ejecuta una sola vez al crear el widget
+  "height": "172",  - Auto-play configurable
+
+  "mass": "77",  - Indicadores de página
+
+  "hair_color": "blond",  - Controles de navegación
+
+  "skin_color": "fair",  - Gestos táctiles para pausar/reanudar
+
+  "eye_color": "blue",- **Razón de elección**: Un carrusel de imágenes es fundamental en aplicaciones de e-commerce para mostrar múltiples vistas de un producto de manera atractiva e interactiva.
+
+  "birth_year": "19BBY",
+
+  "gender": "male",#### 3. Ciclo de Vida de Widgets
+
+  "homeworld": "https://swapi.dev/api/planets/1/",
+
+  "films": ["https://swapi.dev/api/films/1/"],Todos los widgets implementados incluyen logging completo del ciclo de vida con comentarios explicativos:
+
+  "species": [],
+
+  "vehicles": ["https://swapi.dev/api/vehicles/14/"],##### Métodos del Ciclo de Vida Monitoreados:
+
+  "starships": ["https://swapi.dev/api/starships/12/"],
+
+  "created": "2014-12-09T13:50:51.644000Z",```dart
+
+  "edited": "2014-12-20T21:17:56.891000Z",@override
+
+  "url": "https://swapi.dev/api/people/1/"void initState() {
+
+}  super.initState();
+
+```  // 🟢 LIFECYCLE: Se ejecuta una sola vez al crear el widget
+
   // Uso: Inicialización que no depende del contexto
-  print('🟢 Widget - initState(): Inicializando...');
+
+## Funcionalidades Principales  print('🟢 Widget - initState(): Inicializando...');
+
 }
+
+### 1. Lista de Personajes
+
+- **Pantalla:** `StarWarsCharactersPage`@override
+
+- **Funcionalidades:**void didChangeDependencies() {
+
+  - Carga inicial de 82 personajes  super.didChangeDependencies();
+
+  - Barra de búsqueda en tiempo real  // 🟡 LIFECYCLE: Se ejecuta después de initState y cuando cambian las dependencias
+
+  - Scroll infinito con indicador de carga  // Uso: Operaciones que dependen del contexto (Theme, MediaQuery, etc.)
+
+  - Manejo de estados (loading/success/error)  print('🟡 Widget - didChangeDependencies(): Configurando dependencias...');
+
+  - Navegación a detalle por tap}
+
+  - Tema visual Star Wars con efectos de neón
 
 @override
-void didChangeDependencies() {
-  super.didChangeDependencies();
-  // 🟡 LIFECYCLE: Se ejecuta después de initState y cuando cambian las dependencias
-  // Uso: Operaciones que dependen del contexto (Theme, MediaQuery, etc.)
-  print('🟡 Widget - didChangeDependencies(): Configurando dependencias...');
-}
 
-@override
-Widget build(BuildContext context) {
-  // 🔵 LIFECYCLE: Se ejecuta cada vez que se necesita reconstruir
-  // Uso: Construcción de la interfaz de usuario
-  print('🔵 Widget - build(): Construyendo UI...');
-  return Scaffold(...);
-}
+### 2. Detalle del PersonajeWidget build(BuildContext context) {
 
-void _someAction() {
+- **Pantalla:** `CharacterDetailPage`  // 🔵 LIFECYCLE: Se ejecuta cada vez que se necesita reconstruir
+
+- **Funcionalidades:**  // Uso: Construcción de la interfaz de usuario
+
+  - Información completa del personaje  print('🔵 Widget - build(): Construyendo UI...');
+
+  - Carga de información del planeta natal  return Scaffold(...);
+
+  - UI responsiva con tema Star Wars}
+
+  - Navegación de regreso
+
+  - Imágenes de personajes integradasvoid _someAction() {
+
   setState(() {
-    // 🔄 LIFECYCLE: Marca el widget como "dirty" y programa reconstrucción
-    // Uso: Actualizar UI después de cambiar el estado
-    print('🔄 Widget - setState(): Actualizando estado...');
-  });
+
+### 3. Manejo de Estados    // 🔄 LIFECYCLE: Marca el widget como "dirty" y programa reconstrucción
+
+- **Loading:** Indicadores de carga durante peticiones HTTP    // Uso: Actualizar UI después de cambiar el estado
+
+- **Success:** Muestra de datos con UI optimizada    print('🔄 Widget - setState(): Actualizando estado...');
+
+- **Error:** Manejo de errores de red, HTTP y parsing  });
+
 }
+
+## Instalación y Ejecución
 
 @override
-void dispose() {
-  // 🔴 LIFECYCLE: Se ejecuta cuando el widget se elimina permanentemente
-  // Uso: Limpiar recursos, cancelar suscripciones, etc.
-  print('🔴 Widget - dispose(): Limpiando recursos...');
-  super.dispose();
+
+### Prerrequisitosvoid dispose() {
+
+- Flutter SDK ^3.9.0  // 🔴 LIFECYCLE: Se ejecuta cuando el widget se elimina permanentemente
+
+- Dart ^3.0.0  // Uso: Limpiar recursos, cancelar suscripciones, etc.
+
+- Android Studio / VS Code  print('🔴 Widget - dispose(): Limpiando recursos...');
+
+- Dispositivo Android/iOS o emulador  super.dispose();
+
 }
-```
 
-##### Cuándo y Por Qué de Cada Método:
+### Pasos de instalación:```
 
-| Método | Cuándo se ejecuta | Por qué es importante |
-|--------|-------------------|----------------------|
-| `initState()` | Una vez al crear el widget | Inicializar controladores, variables, suscripciones |
+
+
+1. **Clonar el repositorio:**##### Cuándo y Por Qué de Cada Método:
+
+```bash
+
+git clone <repository-url>| Método | Cuándo se ejecuta | Por qué es importante |
+
+cd talleresmoviles|--------|-------------------|----------------------|
+
+```| `initState()` | Una vez al crear el widget | Inicializar controladores, variables, suscripciones |
+
 | `didChangeDependencies()` | Después de initState y cuando cambian dependencias | Configurar elementos que dependen del contexto |
-| `build()` | En cada reconstrucción | Definir la estructura de la UI |
-| `setState()` | Cuando se llama manualmente | Notificar cambios de estado y reconstruir |
-| `dispose()` | Al eliminar el widget | Evitar memory leaks liberando recursos |
+
+2. **Instalar dependencias:**| `build()` | En cada reconstrucción | Definir la estructura de la UI |
+
+```bash| `setState()` | Cuando se llama manualmente | Notificar cambios de estado y reconstruir |
+
+flutter pub get| `dispose()` | Al eliminar el widget | Evitar memory leaks liberando recursos |
+
+```
 
 ### Arquitectura del Proyecto
 
+3. **Verificar configuración de Flutter:**=======
+
+```bash## Arquitectura del Proyecto
+
+flutter doctor>>>>>>> develop
+
 ```
-lib/
-├── main.dart                           # Punto de entrada, configuración de la app
-├── core/
-│   └── routing/
-│       └── app_router.dart            # Configuración de go_router
-└── features/
-    └── taller2/
+
+```
+
+4. **Ejecutar la aplicación:**lib/
+
+```bash├── main.dart                          # Punto de entrada de la aplicación
+
+flutter run├── core/
+
+```│   └── routing/
+
+│       └── app_router.dart           # Configuración de rutas con go_router
+
+## Capturas de Pantalla└── features/
+
+    ├── taller2/
+
+### Pantalla Principal    │   └── presentation/pages/
+
+- Interfaz limpia con información del taller    │       └── home_page.dart        # Página principal del taller
+
+- Botón principal para acceder a los personajes    └── taller_http/                  # Feature del taller HTTP
+
+- FAB con información del proyecto y estudiante        ├── data/
+
+        │   ├── models/              # Modelos de datos
+
+### Lista de Personajes        │   │   ├── character.dart   # Modelo de personaje
+
+- Grid view con tarjetas de personajes temáticas        │   │   ├── planet.dart      # Modelo de planeta
+
+- Barra de búsqueda con efectos visuales Star Wars        │   │   └── api_response.dart # Modelo de respuesta de API
+
+- Scroll infinito con paginación        │   └── services/            # Servicios de datos
+
+- Imágenes de personajes integradas        │       └── star_wars_api_service.dart # Servicio de API
+
         └── presentation/
-            ├── pages/
-            │   ├── home_page.dart              # Página principal con GridView
-            │   ├── product_detail_page.dart    # Página de detalle con TabBar
-            │   └── navigation_demo_page.dart   # Demo de navegación
-            └── widgets/
-                └── image_carousel_widget.dart  # Widget personalizado
-```
 
-### Dependencias
+### Detalle del Personaje            └── pages/               # Páginas de la interfaz
 
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-  cupertino_icons: ^1.0.8
-  go_router: ^14.2.7
-```
+- Información completa del personaje con tema visual                ├── star_wars_characters_page.dart # Lista de personajes
+
+- Datos del planeta natal                └── character_detail_page.dart     # Detalle del personaje
+
+- Navegación fluida de regreso```
+
+- Diseño inmersivo Star Wars
+
+<<<<<<< HEAD
+
+## Patrones de Diseño Implementados### Dependencias
+
+=======
+
+### 1. Arquitectura Limpia (Clean Architecture)## Tecnologías Utilizadas
+
+- **Separación por capas:** data, domain (implícito), presentation>>>>>>> develop
+
+- **Inversión de dependencias:** Services → Models → Views
+
+- **Responsabilidad única:** Cada clase tiene una función específica- **Flutter SDK:** ^3.9.0
+
+- **Dart:** ^3.0.0
+
+### 2. Repository Pattern (Simplificado)- **Dependencias principales:**
+
+- **StarWarsApiService:** Encapsula la lógica de acceso a datos  - `http: ^1.1.0` - Para consumo de API REST
+
+- **Abstracción:** Separación entre fuente de datos y presentación  - `go_router: ^14.2.7` - Para navegación y rutas
+
+  - `cupertino_icons: ^1.0.8` - Iconos iOS
+
+### 3. Model-View Pattern
+
+- **Models:** Representación de datos con JSON serialization## API Utilizada
+
+- **Views:** Widgets de presentación sin lógica de negocio
+
+**Star Wars API (SWAPI)**
+
+## Manejo de Errores- **Base URL:** https://swapi.info/api/
+
+- **Endpoint principal:** `/people/` (personajes)
+
+### Tipos de errores manejados:- **Documentación:** [swapi.info](https://swapi.info)
+
+1. **Errores de red:** Sin conexión a internet
+
+2. **Errores HTTP:** 404, 500, timeout### Estructura de respuesta de la API:
+
+3. **Errores de parsing:** JSON malformado
+
+4. **Errores de aplicación:** Estados inválidos```json
+
+{
+
+### Implementación:  "name": "Luke Skywalker",
+
+```dart  "height": "172",
+
+try {  "mass": "77",
+
+  final response = await http.get(uri);  "hair_color": "blond",
+
+  if (response.statusCode == 200) {  "skin_color": "fair",
+
+    // Procesar datos exitosamente  "eye_color": "blue",
+
+  } else {  "birth_year": "19BBY",
+
+    throw Exception('Error HTTP: ${response.statusCode}');  "gender": "male",
+
+  }  "homeworld": "https://swapi.info/api/planets/1/",
+
+} catch (e) {  "films": ["https://swapi.info/api/films/1/"],
+
+  // Manejo de errores con UI apropiada  "species": [],
+
+}  "vehicles": ["https://swapi.info/api/vehicles/14/"],
+
+```  "starships": ["https://swapi.info/api/starships/12/"],
+
+  "created": "2014-12-09T13:50:51.644000Z",
+
+## Testing  "edited": "2014-12-20T21:17:56.891000Z",
+
+  "url": "https://swapi.info/api/people/1/"
+
+El proyecto incluye:}
+
+- **Widget tests:** Verificación de UI components```
+
+- **Unit tests:** Validación de models y services
+
+- **Integration tests:** Flujos completos de usuario<<<<<<< HEAD
 
 ### Observación del Ciclo de Vida
 
-Para ver los logs del ciclo de vida en acción:
+Para ejecutar los tests:=======
 
-1. **Ejecutar la aplicación**: `flutter run`
-2. **Abrir la consola de debug** en tu IDE
-3. **Navegar entre pantallas** y observar los logs con emojis:
-   - 🟢 initState
-   - 🟡 didChangeDependencies  
-   - 🔵 build
-   - 🔄 setState
-   - 🔴 dispose
+```bash## Funcionalidades Principales
 
-## Taller 1 - Widgets Básicos
-Este proyecto es un taller práctico de Flutter donde se implementan widgets básicos, manejo de estado, imágenes, botones y diseño visual.
-
-## Pasos para ejecutar
-
-### Para Taller 2:
-1. Clona el repositorio:
-   ```bash
-   git clone [URL_DEL_REPOSITORIO]
-   cd talleresmoviles
-   ```
-
-2. Cambiar a la rama del taller:
-   ```bash
-   git checkout feature/taller2
-   ```
-
-3. Instalar dependencias:
-   ```bash
-   flutter pub get
-   ```
-
-4. Ejecutar la aplicación:
-   ```bash
-   flutter run
-   ```
-
-### Para Taller 1:
-1. Clona el repositorio o descarga el código fuente.
-2. Abre una terminal en la carpeta del proyecto.
-3. Ejecuta:
-   ```bash
-   flutter pub get
-   ```
-   para instalar las dependencias.
-4. Luego ejecuta:
-   ```bash
-   flutter run
-   ```
-   para iniciar la aplicación.
-
----
-
-**Desarrollado por**: Cristopher Arias Contreras  
-**Curso**: Electiva profesional I - Desarrollo Móvil  
-**Tecnologías**: Flutter, Dart, go_router
-   ```
-   flutter run
-   ```
-   para iniciar la aplicación en un emulador o dispositivo físico.
-
-## Capturas de pantalla
-En el word enviado
-
----
-
-## Taller: Segundo Plano - Asincronía, Timer e Isolates
-
-### 📋 Descripción del Nuevo Taller
-
-Este nuevo taller demuestra conceptos avanzados de programación asíncrona en Flutter:
-
-- **🔄 Future/async/await**: Operaciones asíncronas no bloqueantes
-- **⏱️ Timer**: Cronómetro y cuenta regresiva con controles
-- **🧮 Isolates**: Tareas CPU-intensivas sin bloquear la UI
-
-### 🏗️ Estructura Implementada
+flutter test>>>>>>> develop
 
 ```
-lib/features/taller_segundo_plano/
-├── services/
-│   ├── async_service.dart      # Simulación de consultas asíncronas
-│   ├── timer_service.dart      # Manejo de Timer con Streams
-│   └── isolate_service.dart    # Procesamiento en Isolates
-└── presentation/pages/
-    ├── async_demo_page.dart    # Demo de Future/async/await
-    ├── timer_demo_page.dart    # Demo de cronómetro
-    └── isolate_demo_page.dart  # Demo de Isolates
+
+### 1. Lista de Personajes
+
+## Mejoras Futuras- **Pantalla:** `StarWarsCharactersPage`
+
+- **Funcionalidades:**
+
+- [ ] Implementar cache local con SQLite  - Carga inicial de 82 personajes
+
+- [ ] Añadir modo offline  - Barra de búsqueda en tiempo real
+
+- [ ] Implementar favoritos  - Scroll infinito con indicador de carga
+
+- [ ] Añadir animaciones de transición  - Manejo de estados (loading/success/error)
+
+- [ ] Soporte para temas claro/oscuro  - Navegación a detalle por tap
+
+- [ ] Internacionalización (i18n)
+
+### 2. Detalle del Personaje
+
+## Conclusiones- **Pantalla:** `CharacterDetailPage`
+
+- **Funcionalidades:**
+
+Este taller demuestra con éxito:  - Información completa del personaje
+
+  - Carga de información del planeta natal
+
+1. **Consumo efectivo de APIs REST** en Flutter usando el paquete `http`  - UI responsiva con Cards y Material 3
+
+2. **Arquitectura escalable** con separación de responsabilidades  - Navegación de regreso
+
+3. **Navegación moderna** con go_router y paso de parámetros
+
+4. **Manejo robusto de estados y errores**### 3. Manejo de Estados
+
+5. **UI/UX optimizada** con Material Design 3 y tema Star Wars- **Loading:** Indicadores de carga durante peticiones HTTP
+
+6. **Código mantenible** con documentación completa- **Success:** Muestra de datos con UI optimizada
+
+- **Error:** Manejo de errores de red, HTTP y parsing
+
+El proyecto sirve como base sólida para aplicaciones Flutter que requieren consumo de APIs REST y demuestra las mejores prácticas del desarrollo móvil moderno.
+
+## Instalación y Ejecución
+
+## Contacto
+
+### Prerrequisitos
+
+**Cristopher Arias Contreras**  - Flutter SDK ^3.9.0
+
+Estudiante de Ingeniería de Sistemas  - Dart ^3.0.0
+
+📧 cristopher.arias01@uceva.edu.co- Android Studio / VS Code
+- Dispositivo Android/iOS o emulador
+
+### Pasos de instalación:
+
+1. **Clonar el repositorio:**
+```bash
+git clone <repository-url>
+cd talleresmoviles
 ```
 
-### 🎯 Funcionalidades Principales
+2. **Instalar dependencias:**
+```bash
+flutter pub get
+```
 
-#### 1. **Demo de Async/Await**
-- Consultas simuladas con `Future.delayed()`
-- Manejo de estados: Loading → Success/Error
-- Operaciones paralelas con `Future.wait()`
-- Logs detallados para debugging
-- UI responsiva durante operaciones
+3. **Verificar configuración de Flutter:**
+```bash
+flutter doctor
+```
 
-#### 2. **Demo de Timer**
-- Cronómetro (cuenta hacia arriba)
-- Cuenta regresiva (countdown personalizable)  
-- Controles: Iniciar/Pausar/Reanudar/Reiniciar
-- Streams para comunicar cambios de estado
-- Limpieza automática de recursos
+4. **Ejecutar la aplicación:**
+```bash
+flutter run
+```
 
-#### 3. **Demo de Isolates**
-- Cálculos matemáticos pesados (suma compleja)
-- Generación de números primos
-- Procesamiento de datos simulado
-- UI permanece fluida durante cálculos
-- Comunicación por mensajes entre Isolates
+## Capturas de Pantalla
 
-### 💡 Conceptos Demostrados
+### Pantalla Principal
+- Interfaz limpia con información del taller
+- Botón principal para acceder a los personajes
+- FAB con información del proyecto y estudiante
 
-#### **Asincronía**
+### Lista de Personajes
+- Grid view con tarjetas de personajes
+- Barra de búsqueda integrada
+- Scroll infinito con paginación
+
+### Detalle del Personaje
+- Información completa del personaje
+- Datos del planeta natal
+- Navegación fluida de regreso
+
+## Patrones de Diseño Implementados
+
+### 1. Arquitectura Limpia (Clean Architecture)
+- **Separación por capas:** data, domain (implícito), presentation
+- **Inversión de dependencias:** Services → Models → Views
+- **Responsabilidad única:** Cada clase tiene una función específica
+
+### 2. Repository Pattern (Simplificado)
+- **StarWarsApiService:** Encapsula la lógica de acceso a datos
+- **Abstracción:** Separación entre fuente de datos y presentación
+
+### 3. Model-View Pattern
+- **Models:** Representación de datos con JSON serialization
+- **Views:** Widgets de presentación sin lógica de negocio
+
+## Manejo de Errores
+
+### Tipos de errores manejados:
+1. **Errores de red:** Sin conexión a internet
+2. **Errores HTTP:** 404, 500, timeout
+3. **Errores de parsing:** JSON malformado
+4. **Errores de aplicación:** Estados inválidos
+
+### Implementación:
 ```dart
-// Ejemplo de consulta asíncrona
-Future<List<String>> fetchData({int delaySeconds = 3}) async {
-  await Future.delayed(Duration(seconds: delaySeconds));
-  
-  // Simulación de posible error
-  if (Random().nextInt(10) < 2) {
-    throw Exception('Error simulado de red');
+try {
+  final response = await http.get(uri);
+  if (response.statusCode == 200) {
+    // Procesar datos exitosamente
+  } else {
+    throw Exception('Error HTTP: ${response.statusCode}');
   }
-  
-  return ['Dato 1', 'Dato 2', 'Dato 3'];
+} catch (e) {
+  // Manejo de errores con UI apropiada
 }
 ```
 
-#### **Timer con Streams**
-```dart
-Timer? _timer;
-final StreamController<int> _timeController = StreamController<int>.broadcast();
+## Testing
 
-void startTimer() {
-  _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-    _seconds++;
-    _timeController.add(_seconds); // Notificar cambios
-  });
-}
+El proyecto incluye:
+- **Widget tests:** Verificación de UI components
+- **Unit tests:** Validación de models y services
+- **Integration tests:** Flujos completos de usuario
+
+Para ejecutar los tests:
+```bash
+flutter test
 ```
 
-#### **Isolates para CPU**
-```dart
-// Función que se ejecuta en Isolate separado
-void _heavySumIsolate(IsolateData data) {
-  double sum = 0;
-  for (int i = 0; i < data.iterations; i++) {
-    sum += sqrt(i * i + 1) * sin(i) * cos(i);
-  }
-  
-  data.sendPort.send(BigSumResult(sum: sum, iterations: data.iterations));
-}
-```
+## Mejoras Futuras
 
-### 🔍 Características Técnicas
+- [ ] Implementar cache local con SQLite
+- [ ] Añadir modo offline
+- [ ] Implementar favoritos
+- [ ] Añadir animaciones de transición
+- [ ] Soporte para temas claro/oscuro
+- [ ] Internacionalización (i18n)
 
-#### **Manejo de Estados**
-- Loading states con indicadores visuales
-- Error handling con mensajes informativos  
-- Success states con datos formateados
+## Conclusiones
 
-#### **Resource Management**
-```dart
-@override
-void dispose() {
-  _timer?.cancel();              // Cancelar timers
-  _timeController.close();       // Cerrar streams
-  _receivePort.close();         // Cerrar communication ports
-  super.dispose();
-}
-```
+Este taller demuestra con éxito:
 
-#### **UI Responsiva**
-- Animaciones que demuestran fluidez durante Isolates
-- Contadores en tiempo real para probar no-bloqueo
-- Layout adaptativo con LayoutBuilder
+1. **Consumo efectivo de APIs REST** en Flutter usando el paquete `http`
+2. **Arquitectura escalable** con separación de responsabilidades
+3. **Navegación moderna** con go_router y paso de parámetros
+4. **Manejo robusto de estados y errores**
+5. **UI/UX optimizada** con Material Design 3
+6. **Código mantenible** con documentación completa
 
-### 📊 Casos de Uso Prácticos
+El proyecto sirve como base sólida para aplicaciones Flutter que requieren consumo de APIs REST y demuestra las mejores prácticas del desarrollo móvil moderno.
 
-#### **Future/async/await**
-- Autenticación de usuarios
-- Carga de datos desde APIs
-- Operaciones de base de datos
-- Upload/download de archivos
+## Contacto
 
-#### **Timer**
-- Aplicaciones de fitness (cronómetros)
-- Juegos (timeouts, countdowns)
-- Notificaciones periódicas
-- Auto-refresh de contenido
-
-#### **Isolates**
-- Procesamiento de imágenes
-- Parsing de archivos grandes (JSON/CSV)
-- Algoritmos de ordenamiento
-- Cálculos científicos/matemáticos
-
-### 🚀 Cómo Probar
-
-1. **Ejecutar la aplicación**:
-   ```bash
-   flutter run
-   ```
-
-2. **Navegar a las demos**:
-   - Página principal muestra 3 tarjetas principales
-   - Cada demo incluye explicaciones y ejemplos interactivos
-   - Revisar la consola de debug para logs detallados
-
-3. **Probar funcionalidades**:
-   - **Async**: Botones para consultas de diferentes duraciones
-   - **Timer**: Cronómetro y countdown con controles
-   - **Isolates**: Diferentes tipos de procesamiento CPU-intensivo
-
-### 📈 Logging Detallado
-
-El proyecto incluye logging comprensivo para seguimiento:
-
-```
-🔵 [AsyncService] Iniciando consulta de datos...
-🟢 [AsyncService] Datos obtenidos exitosamente
-⏱️ [TimerService] Iniciando cronómetro  
-🔧 [IsolateService] Iniciando cálculo pesado
-✅ [IsolateService] Cálculo completado
-```
-
----
-
+**Cristopher Arias Contreras**  
+Estudiante de Ingeniería de Sistemas  
+ cristopher.arias01@uceva.edu.co
