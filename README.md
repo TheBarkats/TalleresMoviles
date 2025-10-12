@@ -10,15 +10,14 @@ Aplicación Flutter que demuestra el consumo de APIs REST utilizando el paquete 
 
 
 
-**Estudiante:** Cristopher Arias Contreras  **Estudiante:** Cristopher Arias Contreras  
+**Estudiante:** Cristopher Arias Contreras
 
-**Código:** 230222032  **Código:** 230222032  
+**Código:** 230222032  
 
-**Asignatura:** Electiva profesional I - Desarrollo Móvil  **Asignatura:** Electiva profesional I - Desarrollo Móvil  
+**Asignatura:** Electiva profesional I - Desarrollo Móvil  
 
-**Semestre:** VII Semestre  **Semestre:** VII Semestre  
-
-**Universidad:** Unidad Central del Valle  **Universidad:** Unidad Central del Valle  
+**Semestre:** VII Semestre  
+**Universidad:** Unidad Central del Valle 
 
 
 
