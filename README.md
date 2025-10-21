@@ -220,6 +220,50 @@ flutter test
 - [ ] Soporte para temas claro/oscuro
 - [ ] Internacionalización (i18n)
 
+## 📱 Publicación y Distribución
+
+### Firebase App Distribution
+
+Esta aplicación se distribuye usando **Firebase App Distribution** para testing con usuarios internos y QA.
+
+#### Proceso de Distribución
+
+```
+Desarrollo → Build APK → Firebase App Distribution → Grupo QA → Testing → Actualización
+```
+
+#### Versiones Publicadas
+
+| Versión | Build | Fecha | Grupo | Estado |
+|---------|-------|-------|-------|--------|
+| 1.0.0 | 1 | [Fecha] | QA_Clase | ✅ Distribuido |
+| 1.0.1 | 2 | [Pendiente] | QA_Clase | ⏳ En desarrollo |
+
+#### Información de Distribución
+
+- **Application ID:** `com.example.talleresmoviles`
+- **Grupo de Testers:** QA_Clase
+- **Tester Principal:** dduran@uceva.edu.co
+- **Plataforma:** Firebase App Distribution
+
+#### Generar APK para Distribución
+
+```bash
+# Limpiar builds anteriores
+flutter clean
+
+# Generar APK de release
+flutter build apk --release
+
+# El APK se genera en:
+# build/app/outputs/flutter-apk/app-release.apk
+```
+
+#### Documentación Completa
+
+Para más detalles sobre el proceso de distribución, consultar:
+- 📄 [FIREBASE_APP_DISTRIBUTION.md](./FIREBASE_APP_DISTRIBUTION.md) - Guía completa de distribución
+
 ## Conclusiones
 
 Este taller demuestra con éxito:
