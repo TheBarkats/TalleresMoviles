@@ -16,13 +16,15 @@ Este taller está desarrollado como parte de la **Electiva profesional I - Desar
 
 ## Características Implementadas
 
-- ✅ **Consumo de API pública:** Star Wars API (swapi.info)
+- ✅ **Consumo de API pública:** Star Wars API (swapi.dev)
 - ✅ **Manejo de estados:** Loading, success, error con UI responsiva
 - ✅ **Navegación:** go_router con paso de parámetros y rutas tipadas
 - ✅ **Scroll infinito:** Paginación automática al llegar al final
-- ✅ **Búsqueda en tiempo real:** Filtrado de personajes por nombre
+- ✅ **Búsqueda en tiempo real:** Filtrado de personajes por nombre con debounce
 - ✅ **Arquitectura limpia:** Separación por capas (models, services, views)
 - ✅ **Manejo de errores:** HTTP, de red y de parsing JSON
+- ✅ **Tema Star Wars:** Diseño visual inmersivo con efectos de neón
+- ✅ **Firebase Integration:** Analytics y App Distribution configurados
 - ✅ **Documentación:** Código completamente documentado
 
 ## Arquitectura del Proyecto
@@ -59,13 +61,18 @@ lib/
   - `http: ^1.1.0` - Para consumo de API REST
   - `go_router: ^14.2.7` - Para navegación y rutas
   - `cupertino_icons: ^1.0.8` - Iconos iOS
+- **Firebase:**
+  - Firebase BoM 34.4.0
+  - Firebase Analytics
+  - Firebase App Distribution
+  - Google Services Plugin 4.4.4
 
 ## API Utilizada
 
 **Star Wars API (SWAPI)**
-- **Base URL:** https://swapi.info/api/
+- **Base URL:** https://swapi.dev/api/
 - **Endpoint principal:** `/people/` (personajes)
-- **Documentación:** [swapi.info](https://swapi.info)
+- **Documentación:** [swapi.dev](https://swapi.dev)
 
 ### Estructura de respuesta de la API:
 
@@ -236,8 +243,8 @@ Desarrollo → Build APK → Firebase App Distribution → Grupo QA → Testing 
 
 | Versión | Build | Fecha | Grupo | Estado |
 |---------|-------|-------|-------|--------|
-| 1.0.0 | 1 | [Fecha] | QA_Clase | ✅ Distribuido |
-| 1.0.1 | 2 | [Pendiente] | QA_Clase | ⏳ En desarrollo |
+| 1.0.0 | 1 | Octubre 2025 | QA_Clase | 🚀 Listo para distribución |
+| 1.0.1 | 2 | Pendiente | QA_Clase | ⏳ Próxima actualización |
 
 #### Información de Distribución
 
@@ -245,6 +252,8 @@ Desarrollo → Build APK → Firebase App Distribution → Grupo QA → Testing 
 - **Grupo de Testers:** QA_Clase
 - **Tester Principal:** dduran@uceva.edu.co
 - **Plataforma:** Firebase App Distribution
+- **Tamaño APK:** ~46.1 MB
+- **Firebase Integrado:** ✅ Analytics + App Distribution
 
 #### Generar APK para Distribución
 
@@ -272,10 +281,11 @@ Este taller demuestra con éxito:
 2. **Arquitectura escalable** con separación de responsabilidades
 3. **Navegación moderna** con go_router y paso de parámetros
 4. **Manejo robusto de estados y errores**
-5. **UI/UX optimizada** con Material Design 3
-6. **Código mantenible** con documentación completa
+5. **UI/UX optimizada** con Material Design 3 y tema Star Wars inmersivo
+6. **Integración Firebase** para distribución y analytics
+7. **Código mantenible** con documentación completa
 
-El proyecto sirve como base sólida para aplicaciones Flutter que requieren consumo de APIs REST y demuestra las mejores prácticas del desarrollo móvil moderno.
+El proyecto sirve como base sólida para aplicaciones Flutter que requieren consumo de APIs REST, distribución con Firebase App Distribution, y demuestra las mejores prácticas del desarrollo móvil moderno.
 
 ## Contacto
 
