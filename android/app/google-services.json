@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "865651696111",
+    "project_id": "talleresmoviles-qa",
+    "storage_bucket": "talleresmoviles-qa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865651696111:android:7002cfba7d25cb6fef561a",
+        "android_client_info": {
+          "package_name": "com.example.talleresmoviles"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBphkmg5NJAp8W2RUxl7iksmIrjh0WsvgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
