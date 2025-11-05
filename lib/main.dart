@@ -1,9 +1,17 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'core/routing/app_router.dart';
 
 /// Punto de entrada de la aplicación
-/// Configuración principal que inicia la aplicación con go_router
-void main() {
+/// Configuración principal que inicia la aplicación con Firebase y go_router
+void main() async {
+  // Asegurar que los widgets estén inicializados
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  
+  // Inicializar Firebase
+  await Firebase.initializeApp();
+  
   runApp(const MyApp());
 }
 

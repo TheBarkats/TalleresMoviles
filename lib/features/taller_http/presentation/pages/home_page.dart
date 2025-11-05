@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Taller HTTP - Star Wars API'),
+        title: const Text('Talleres Electiva Profesional I'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         elevation: 2,
       ),
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Consumo de API REST',
+                            'Talleres Electiva Profesional I',
                             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -70,12 +70,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'Este taller demuestra:\n'
-                      '• Consumo de API pública con paquete http\n'
-                      '• Manejo de estados (cargando/éxito/error)\n'
-                      '• Navegación con go_router y parámetros\n'
-                      '• Separación por capas (models/services/views)\n'
-                      '• Scroll infinito y búsqueda en tiempo real',
+                      'Esta demo contiene distintos talleres entre ellos:\n'
+                      '• API de Star Wars:\n'
+                      '• Integracion con Firebase y Google cloud_firestore\n',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -84,54 +81,35 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             
-            // Botón principal para acceder al taller
+            // Botones principales para acceder a los talleres
             Expanded(
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 2,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.public,
-                        size: 60,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Taller 1: Star Wars API
+                      _TallerCard(
+                        icon: Icons.public,
                         color: Colors.green,
+                        title: 'Taller HTTP',
+                        subtitle: 'Star Wars API',
+                        description: 'API: swapi.info',
+                        onTap: _navigateToStarWars,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _navigateToStarWars,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 16,
-                        ),
+                      const SizedBox(height: 20),
+                      
+                      // Taller 2: Firebase Firestore
+                      _TallerCard(
+                        icon: Icons.cloud,
+                        color: Colors.orange,
+                        title: 'Taller Firebase',
+                        subtitle: 'Universidades CRUD',
+                        description: 'Firestore Database',
+                        onTap: _navigateToUniversidades,
                       ),
-                      child: const Text(
-                        'Ver Personajes de Star Wars',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'API: swapi.info',
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -154,6 +132,12 @@ class _HomePageState extends State<HomePage> {
     context.go('/starwars');
   }
 
+  /// Navega al taller de Firebase - Universidades
+  void _navigateToUniversidades() {
+    debugPrint('HomePage - Navegando al taller Firebase de Universidades');
+    context.go('/universidades');
+  }
+
   /// Muestra información del proyecto y estudiante
   void _showProjectInfo() {
     showDialog(
@@ -174,7 +158,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Taller HTTP - Consumo de API REST',
+                'Talleres de Desarrollo Móvil',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -188,25 +172,32 @@ class _HomePageState extends State<HomePage> {
               Text('Código: 230222032'),
               SizedBox(height: 12),
               Text(
-                'Características implementadas:',
+                'Taller 1 - HTTP:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4),
-              Text('Consumo de API pública (Star Wars API)'),
-              Text('Manejo de estados y errores'),
-              Text('Navegación con go_router'),
-              Text('Scroll infinito y paginación'),
-              Text('Búsqueda en tiempo real'),
-              Text('Arquitectura limpia por capas'),
+              Text('• Consumo de API REST (Star Wars)'),
+              Text('• Scroll infinito y búsqueda'),
+              Text('• Manejo de estados y errores'),
+              SizedBox(height: 8),
+              Text(
+                'Taller 2 - Firebase:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 4),
+              Text('• CRUD con Firestore'),
+              Text('• Sincronización en tiempo real'),
+              Text('• Validación de datos'),
               SizedBox(height: 12),
               Text(
                 'Tecnologías:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4),
-              Text('• Flutter 3.9+'),
-              Text('• Dart 3.0+'),
+              Text('• Flutter 3.9+ / Dart 3.0+'),
               Text('• http: ^1.1.0'),
+              Text('• firebase_core: ^3.6.0'),
+              Text('• cloud_firestore: ^5.4.4'),
               Text('• go_router: ^14.2.7'),
             ],
           ),
@@ -217,6 +208,81 @@ class _HomePageState extends State<HomePage> {
             child: const Text('Cerrar'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Widget reutilizable para representar cada taller disponible
+class _TallerCard extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String title;
+  final String subtitle;
+  final String description;
+  final VoidCallback onTap;
+
+  const _TallerCard({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.subtitle,
+    required this.description,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: color,
+                    width: 2,
+                  ),
+                ),
+                child: Icon(
+                  icon,
+                  size: 40,
+                  color: color,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                description,
+                style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
