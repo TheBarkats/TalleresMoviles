@@ -1,6 +1,6 @@
-# Taller HTTP - Star Wars API
+# Talleres Electiva Profesional I - Desarrollo Móvil
 
-Aplicación Flutter que demuestra el consumo de APIs REST utilizando el paquete `http`, implementando arquitectura limpia y navegación con parámetros.
+Aplicación Flutter que contiene múltiples talleres de desarrollo móvil, demostrando el consumo de APIs REST y gestión de datos con Firebase Firestore.
 
 ## Información Académica
 
@@ -12,10 +12,17 @@ Aplicación Flutter que demuestra el consumo de APIs REST utilizando el paquete 
 
 ## Descripción del Proyecto
 
-Este taller está desarrollado como parte de la **Electiva profesional I - Desarrollo Móvil** y demuestra las mejores prácticas para el consumo de APIs REST en Flutter, implementando una aplicación que consulta la **Star Wars API (SWAPI)** para mostrar información de personajes del universo de Star Wars.
+Esta aplicación está desarrollada como parte de la **Electiva profesional I - Desarrollo Móvil** y contiene dos talleres principales que demuestran las mejores prácticas en desarrollo móvil con Flutter:
+
+### Taller 1: Consumo de API REST - Star Wars
+Implementa una aplicación que consulta la **Star Wars API (SWAPI)** para mostrar información de personajes del universo de Star Wars.
+
+### Taller 2: Firebase Firestore - Gestión de Universidades
+Implementa un sistema CRUD completo para gestionar información de universidades colombianas con sincronización en tiempo real usando Firestore.
 
 ## Características Implementadas
 
+### Taller HTTP - Star Wars API
 - ✅ **Consumo de API pública:** Star Wars API (swapi.dev)
 - ✅ **Manejo de estados:** Loading, success, error con UI responsiva
 - ✅ **Navegación:** go_router con paso de parámetros y rutas tipadas
@@ -24,34 +31,78 @@ Este taller está desarrollado como parte de la **Electiva profesional I - Desar
 - ✅ **Arquitectura limpia:** Separación por capas (models, services, views)
 - ✅ **Manejo de errores:** HTTP, de red y de parsing JSON
 - ✅ **Tema Star Wars:** Diseño visual inmersivo con efectos de neón
+
+### Taller Firebase - Universidades CRUD
+- ✅ **Cloud Firestore:** Base de datos NoSQL en tiempo real
+- ✅ **CRUD completo:** Create, Read, Update, Delete de universidades
+- ✅ **Sincronización en tiempo real:** StreamBuilder con actualizaciones instantáneas
+- ✅ **Búsqueda avanzada:** Filtrado por nombre y NIT
+- ✅ **Validaciones:** Formularios con validación de campos y NIT único
+- ✅ **Arquitectura limpia:** Separación por capas (models, services, presentation)
+- ✅ **Manejo de errores:** Firebase exceptions con UI apropiada
 - ✅ **Firebase Integration:** Analytics y App Distribution configurados
 - ✅ **Documentación:** Código completamente documentado
 
 ## Arquitectura del Proyecto
 
+El proyecto sigue una arquitectura limpia (Clean Architecture) con separación por features, donde cada taller está completamente aislado y puede funcionar de manera independiente.
+
 ```
 lib/
-├── main.dart                          # Punto de entrada de la aplicación
+├── main.dart                          # Punto de entrada + Firebase init
 ├── core/
 │   └── routing/
-│       └── app_router.dart           # Configuración de rutas con go_router
+│       └── app_router.dart           # Configuración centralizada de rutas
 └── features/
-    ├── taller2/
-    │   └── presentation/pages/
-    │       └── home_page.dart        # Página principal del taller
-    └── taller_http/                  # Feature del taller HTTP
+    ├── taller_http/                  # Feature: Taller HTTP - Star Wars
+    │   ├── data/
+    │   │   ├── models/              # Modelos de datos
+    │   │   │   ├── character.dart   # Modelo de personaje
+    │   │   │   ├── planet.dart      # Modelo de planeta
+    │   │   │   └── api_response.dart # Modelo de respuesta
+    │   │   └── services/            # Servicios de datos
+    │   │       └── starwars_api_service.dart # Servicio de API REST
+    │   └── presentation/
+    │       └── pages/               # Páginas de la interfaz
+    │           ├── home_page.dart   # Página principal
+    │           ├── starwars_characters_page.dart # Lista
+    │           └── character_detail_page.dart    # Detalle
+    │
+    └── taller_firebase/              # Feature: Taller Firebase
         ├── data/
         │   ├── models/              # Modelos de datos
-        │   │   ├── character.dart   # Modelo de personaje
-        │   │   ├── planet.dart      # Modelo de planeta
-        │   │   └── api_response.dart # Modelo de respuesta de API
+        │   │   └── universidad.dart # Modelo de universidad
         │   └── services/            # Servicios de datos
-        │       └── star_wars_api_service.dart # Servicio de API
+        │       └── universidades_service.dart # Servicio CRUD Firestore
         └── presentation/
             └── pages/               # Páginas de la interfaz
-                ├── star_wars_characters_page.dart # Lista de personajes
-                └── character_detail_page.dart     # Detalle del personaje
+                ├── universidades_list_page.dart  # Lista con StreamBuilder
+                └── universidad_form_page.dart    # Formulario Create/Update
 ```
+
+### Arquitectura por Capas
+
+#### 1. Capa de Datos (Data Layer)
+- **Models:** Clases que representan entidades de negocio
+  - Serialización/deserialización JSON (API REST)
+  - Conversión Firestore (toFirestore/fromFirestore)
+- **Services:** Lógica de acceso a datos
+  - Comunicación con APIs externas (HTTP)
+  - Operaciones CRUD con Firestore
+  - Manejo de errores y excepciones
+
+#### 2. Capa de Presentación (Presentation Layer)
+- **Pages:** Pantallas completas de la aplicación
+  - Stateful widgets para manejo de estado local
+  - StreamBuilder para datos en tiempo real
+  - Formularios con validación
+- **Widgets:** Componentes reutilizables (cuando aplica)
+
+#### 3. Capa Core (Core Layer)
+- **Routing:** Configuración centralizada de navegación
+  - Definición de todas las rutas de la app
+  - Paso de parámetros entre pantallas
+  - Manejo de errores de navegación
 
 ## Tecnologías Utilizadas
 
@@ -60,8 +111,10 @@ lib/
 - **Dependencias principales:**
   - `http: ^1.1.0` - Para consumo de API REST
   - `go_router: ^14.2.7` - Para navegación y rutas
+  - `firebase_core: ^3.6.0` - Core de Firebase para inicialización
+  - `cloud_firestore: ^5.4.4` - Base de datos NoSQL en tiempo real
   - `cupertino_icons: ^1.0.8` - Iconos iOS
-- **Firebase:**
+- **Firebase (Android):**
   - Firebase BoM 34.4.0
   - Firebase Analytics
   - Firebase App Distribution
@@ -97,9 +150,255 @@ lib/
 }
 ```
 
+## 🔥 Taller Firebase - Universidades CRUD
+
+### Descripción Técnica
+
+Sistema completo de gestión de universidades colombianas implementado con **Cloud Firestore** como base de datos en tiempo real. El módulo demuestra operaciones CRUD (Create, Read, Update, Delete) con sincronización instantánea entre dispositivos.
+
+### Arquitectura del Módulo Firebase
+
+#### Modelo de Datos - Universidad
+
+```dart
+class Universidad {
+  final String? id;           // ID del documento en Firestore
+  final String nit;          // Número de Identificación Tributaria
+  final String nombre;       // Nombre de la universidad
+  final String direccion;    // Dirección física
+  final String telefono;     // Número de contacto
+  final String paginaWeb;    // URL del sitio web
+
+  // Métodos de serialización
+  Map<String, dynamic> toFirestore()
+  factory Universidad.fromFirestore(Map<String, dynamic> data, String id)
+  Universidad copyWith({...})
+}
+```
+
+**Campo en Firestore:** `pagina_web` (snake_case según convenciones NoSQL)
+
+#### Servicio - UniversidadesService
+
+Servicio centralizado que encapsula toda la lógica de negocio y comunicación con Firestore.
+
+**Operaciones CRUD Implementadas:**
+
+```dart
+class UniversidadesService {
+  final FirebaseFirestore _firestore;
+  final CollectionReference _universidadesCollection;
+
+  // CREATE
+  Future<String> crearUniversidad(Universidad universidad)
+  
+  // READ
+  Stream<List<Universidad>> obtenerUniversidades()
+  Future<Universidad?> obtenerUniversidadPorId(String id)
+  Stream<List<Universidad>> buscarUniversidades(String query)
+  
+  // UPDATE
+  Future<void> actualizarUniversidad(Universidad universidad)
+  
+  // DELETE
+  Future<void> eliminarUniversidad(String id)
+  
+  // UTILIDADES
+  Future<bool> existeNit(String nit, {String? excludeId})
+  Future<int> contarUniversidades()
+}
+```
+
+#### Gestión de Estado
+
+**StreamBuilder para Tiempo Real:**
+```dart
+StreamBuilder<List<Universidad>>(
+  stream: _service.obtenerUniversidades(),
+  builder: (context, snapshot) {
+    // Maneja estados: loading, error, empty, success
+  }
+)
+```
+
+**Estados Manejados:**
+- ✅ `ConnectionState.waiting` → CircularProgressIndicator
+- ✅ `snapshot.hasError` → Pantalla de error con mensaje
+- ✅ `!snapshot.hasData || empty` → Estado vacío con mensaje
+- ✅ `snapshot.hasData` → ListView con datos
+
+### Validaciones Implementadas
+
+#### 1. Validación de Formularios
+
+**Campo NIT:**
+```dart
+validator: (value) {
+  if (value == null || value.trim().isEmpty) {
+    return 'El NIT es requerido';
+  }
+  return null;
+}
+```
+
+**Campo Nombre:**
+```dart
+validator: (value) {
+  if (value == null || value.trim().isEmpty) {
+    return 'El nombre es requerido';
+  }
+  if (value.trim().length < 3) {
+    return 'El nombre debe tener al menos 3 caracteres';
+  }
+  return null;
+}
+```
+
+**Campo Página Web:**
+```dart
+validator: (value) {
+  final urlPattern = RegExp(
+    r'^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$'
+  );
+  if (!urlPattern.hasMatch(value.trim())) {
+    return 'Ingresa una URL válida (debe comenzar con http:// o https://)';
+  }
+  return null;
+}
+```
+
+#### 2. Validación de NIT Único
+
+Antes de crear o actualizar, se verifica que el NIT no exista:
+
+```dart
+Future<bool> existeNit(String nit, {String? excludeId}) async {
+  final query = await _universidadesCollection
+    .where('nit', isEqualTo: nit)
+    .get();
+  
+  if (excludeId != null) {
+    // Excluir el documento actual al editar
+    final docs = query.docs.where((doc) => doc.id != excludeId).toList();
+    return docs.isNotEmpty;
+  }
+  
+  return query.docs.isNotEmpty;
+}
+```
+
+#### 3. Validación de Campos Obligatorios
+
+Todos los campos son requeridos y validados antes de guardar:
+- ✅ NIT no vacío
+- ✅ Nombre con mínimo 3 caracteres
+- ✅ Dirección no vacía
+- ✅ Teléfono no vacío
+- ✅ Página web con formato URL válido
+
+### Funcionalidades de Búsqueda
+
+**Búsqueda en Tiempo Real:**
+```dart
+Stream<List<Universidad>> buscarUniversidades(String query) {
+  return _universidadesCollection
+    .orderBy('nombre')
+    .snapshots()
+    .map((snapshot) {
+      final universidades = snapshot.docs.map(...)toList();
+      
+      // Filtrado local (Firestore no soporta LIKE nativo)
+      return universidades.where((uni) {
+        return uni.nombre.toLowerCase().contains(query.toLowerCase()) ||
+               uni.nit.contains(query);
+      }).toList();
+    });
+}
+```
+
+**Criterios de Búsqueda:**
+- Por nombre (case-insensitive, substring matching)
+- Por NIT (coincidencia exacta o parcial)
+
+### Manejo de Errores Firebase
+
+```dart
+try {
+  await _service.crearUniversidad(universidad);
+  // Mostrar SnackBar de éxito
+} on FirebaseException catch (e) {
+  // Error específico de Firebase
+  showSnackBar('Error de Firebase: ${e.message}');
+} catch (e) {
+  // Error general
+  showSnackBar('Error al guardar: $e');
+}
+```
+
+**Errores Manejados:**
+- ❌ Errores de permisos de Firestore
+- ❌ Errores de red (sin conexión)
+- ❌ Errores de validación de datos
+- ❌ Errores de serialización
+
+### Pantallas del Módulo
+
+#### 1. UniversidadesListPage
+- **Funcionalidad:** Lista de todas las universidades con búsqueda
+- **Estado:** StreamBuilder para actualizaciones en tiempo real
+- **Acciones:**
+  - Ver detalle (Dialog con toda la información)
+  - Editar universidad (navega a formulario)
+  - Eliminar universidad (con confirmación)
+  - Búsqueda en tiempo real
+  - Agregar nueva universidad (FAB)
+
+#### 2. UniversidadFormPage
+- **Funcionalidad:** Crear o editar universidades
+- **Modos:** Create (nuevo) / Update (editar)
+- **Validaciones:** Formulario completo con validadores
+- **Características:**
+  - Carga de datos existentes en modo edición
+  - Validación de NIT único
+  - Indicador de carga durante operaciones
+  - Botones de Cancelar/Guardar
+
+### Colección Firestore
+
+**Nombre:** `universidades`
+
+**Estructura del Documento:**
+```json
+{
+  "nit": "890123456-7",
+  "nombre": "Unidad Central del Valle",
+  "direccion": "Cra 27A #48-144, Tuluá - Valle",
+  "telefono": "+57 602 2242202",
+  "pagina_web": "https://www.uceva.edu.co"
+}
+```
+
+**Índices:**
+- Campo `nombre` (ordenamiento alfabético)
+- Campo `nit` (búsqueda de unicidad)
+
+### Sincronización en Tiempo Real
+
+La aplicación se actualiza automáticamente cuando:
+- ✅ Otro usuario crea una universidad
+- ✅ Otro usuario actualiza datos
+- ✅ Otro usuario elimina una universidad
+- ✅ Se restaura la conexión a internet
+
+Todo gracias a **Firestore Snapshots** que emiten eventos de cambio instantáneamente.
+
+---
+
 ## Funcionalidades Principales
 
-### 1. Lista de Personajes
+### Taller HTTP - Star Wars
+
+#### 1. Lista de Personajes
 - **Pantalla:** `StarWarsCharactersPage`
 - **Funcionalidades:**
   - Carga inicial de 82 personajes
@@ -220,12 +519,28 @@ flutter test
 
 ## Mejoras Futuras
 
+### Taller HTTP - Star Wars
 - [ ] Implementar cache local con SQLite
 - [ ] Añadir modo offline
-- [ ] Implementar favoritos
+- [ ] Implementar favoritos de personajes
 - [ ] Añadir animaciones de transición
+- [ ] Filtros avanzados (por especie, género, etc.)
+
+### Taller Firebase - Universidades
+- [ ] Paginación en lista de universidades
+- [ ] Filtros avanzados (por ciudad, región)
+- [ ] Búsqueda con Algolia para mejor rendimiento
+- [ ] Importación/Exportación de datos en CSV
+- [ ] Estadísticas con gráficos
+- [ ] Autenticación de usuarios con Firebase Auth
+- [ ] Roles y permisos (admin/viewer)
+
+### General
 - [ ] Soporte para temas claro/oscuro
 - [ ] Internacionalización (i18n)
+- [ ] Tests unitarios y de integración completos
+- [ ] CI/CD con GitHub Actions
+- [ ] Versión iOS completa
 
 ## 📱 Publicación y Distribución
 
@@ -241,10 +556,10 @@ Desarrollo → Build APK → Firebase App Distribution → Grupo QA → Testing 
 
 #### Versiones Publicadas
 
-| Versión | Build | Fecha | Grupo | Estado |
-|---------|-------|-------|-------|--------|
-| 1.0.0 | 1 | Octubre 2025 | QA_Clase | 🚀 Listo para distribución |
-| 1.0.1 | 2 | Pendiente | QA_Clase | ⏳ Próxima actualización |
+| Versión | Build | Fecha | Contenido | Grupo | Estado |
+|---------|-------|-------|-----------|-------|--------|
+| 1.0.0 | 1 | Octubre 2025 | Taller HTTP - Star Wars API | QA_Clase | ✅ Distribuido |
+| 1.0.1 | 2 | Noviembre 2025 | + Taller Firebase - Universidades CRUD | QA_Clase | 🚀 Listo para distribución |
 
 #### Información de Distribución
 
@@ -275,17 +590,38 @@ Para más detalles sobre el proceso de distribución, consultar:
 
 ## Conclusiones
 
-Este taller demuestra con éxito:
+Este proyecto de talleres demuestra con éxito:
 
+### Taller HTTP - Star Wars API
 1. **Consumo efectivo de APIs REST** en Flutter usando el paquete `http`
 2. **Arquitectura escalable** con separación de responsabilidades
 3. **Navegación moderna** con go_router y paso de parámetros
-4. **Manejo robusto de estados y errores**
+4. **Manejo robusto de estados y errores** HTTP
 5. **UI/UX optimizada** con Material Design 3 y tema Star Wars inmersivo
-6. **Integración Firebase** para distribución y analytics
-7. **Código mantenible** con documentación completa
 
-El proyecto sirve como base sólida para aplicaciones Flutter que requieren consumo de APIs REST, distribución con Firebase App Distribution, y demuestra las mejores prácticas del desarrollo móvil moderno.
+### Taller Firebase - Universidades CRUD
+1. **Integración completa con Firebase** (Core + Firestore)
+2. **Operaciones CRUD en tiempo real** con sincronización instantánea
+3. **Validaciones robustas** en formularios y datos únicos
+4. **Manejo de StreamBuilder** para datos en tiempo real
+5. **Arquitectura limpia** con separación de capas
+6. **Manejo de errores Firebase** con UI apropiada
+
+### Integración y Distribución
+1. **Firebase App Distribution** para testing y distribución
+2. **Firebase Analytics** para métricas de uso
+3. **Git Flow** profesional con ramas feature, develop y main
+4. **Código mantenible** con documentación completa
+5. **Arquitectura modular** con features independientes
+
+El proyecto sirve como base sólida para aplicaciones Flutter que requieren:
+- ✅ Consumo de APIs REST externas
+- ✅ Gestión de datos en tiempo real con Firebase
+- ✅ Navegación compleja entre múltiples módulos
+- ✅ Validaciones de formularios y datos
+- ✅ Distribución con Firebase App Distribution
+
+Demuestra las **mejores prácticas del desarrollo móvil moderno** con Flutter y Firebase.
 
 ## Contacto
 

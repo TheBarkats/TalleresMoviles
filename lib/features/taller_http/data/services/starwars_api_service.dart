@@ -81,7 +81,7 @@ class StarWarsApiService {
           // Respuesta estándar con paginación
           final apiResponse = ApiResponse<Character>.fromJson(
             jsonData as Map<String, dynamic>,
-            (json) => Character.fromJson(json as Map<String, dynamic>),
+            (json) => Character.fromJson(json),
           );
           
           print('[StarWarsAPI] Personajes obtenidos: ${apiResponse.results.length}');
@@ -212,7 +212,7 @@ class StarWarsApiService {
         
         final apiResponse = ApiResponse<Planet>.fromJson(
           jsonData,
-          (json) => Planet.fromJson(json as Map<String, dynamic>),
+          (json) => Planet.fromJson(json),
         );
         
         print('[StarWarsAPI] Planetas obtenidos: ${apiResponse.results.length}');
