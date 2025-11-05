@@ -3,9 +3,11 @@ import 'package:go_router/go_router.dart';
 import '../../features/taller_http/presentation/pages/home_page.dart';
 import '../../features/taller_http/presentation/pages/starwars_characters_page.dart';
 import '../../features/taller_http/presentation/pages/character_detail_page.dart';
+import '../../features/taller_firebase/presentation/pages/universidades_list_page.dart';
+import '../../features/taller_firebase/presentation/pages/universidad_form_page.dart';
 
-/// Configuración central de rutas para el Taller HTTP - Star Wars API
-/// Maneja toda la navegación de la aplicación con tipo seguro
+/// Configuración central de rutas para la aplicación
+/// Maneja toda la navegación con tipo seguro
 final GoRouter router = GoRouter(
   initialLocation: '/',
   routes: [
@@ -34,6 +36,32 @@ final GoRouter router = GoRouter(
           characterId: characterId,
           characterName: characterName,
         );
+      },
+    ),
+
+    // ==================== RUTAS TALLER FIREBASE ====================
+    
+    // Ruta principal - Listado de Universidades
+    GoRoute(
+      path: '/universidades',
+      name: 'universidades',
+      builder: (context, state) => const UniversidadesListPage(),
+    ),
+    
+    // Ruta para crear nueva universidad
+    GoRoute(
+      path: '/universidades/nueva',
+      name: 'nueva-universidad',
+      builder: (context, state) => const UniversidadFormPage(),
+    ),
+    
+    // Ruta para editar universidad
+    GoRoute(
+      path: '/universidades/editar/:id',
+      name: 'editar-universidad',
+      builder: (context, state) {
+        final universidadId = state.pathParameters['id']!;
+        return UniversidadFormPage(universidadId: universidadId);
       },
     ),
   ],
